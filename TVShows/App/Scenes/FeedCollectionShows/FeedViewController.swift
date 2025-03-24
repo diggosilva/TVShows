@@ -56,26 +56,19 @@ class FeedViewController: UIViewController {
     func handleStates() {
         viewModel.state.bind { states in
             switch states {
-            case .loading:
-                self.showLoadingState()
-            case .loaded:
-                self.showLoadedState()
-            case .error:
-                self.showErrorState()
+            case .loading: self.showLoadingState()
+            case .loaded: self.showLoadedState()
+            case .error: self.showErrorState()
             }
         }
     }
     
-    private func showLoadingState() {
-        handleSpinner(isLoading: true)
-    }
+    private func showLoadingState() { handleSpinner(isLoading: true) }
     
-    private func showLoadedState() {
-        handleSpinner(isLoading: false)
-    }
+    private func showLoadedState() { handleSpinner(isLoading: false) }
     
     private func showErrorState() {
-        presentDSAlert(title: "Ops... algo deu errado!", message: "Tente novamente!") { action in
+        presentDSAlert(title: "Ops... algo deu errado!", message: DSError.networkError.rawValue) { action in
             self.handleSpinner(isLoading: false)
         }
     }
@@ -92,9 +85,7 @@ class FeedViewController: UIViewController {
         }
     }
     
-    private func configureNavigationBar() {
-        title = "TV Shows"
-    }
+    private func configureNavigationBar() { title = "TV Shows" }
     
     private func configureDelegates() {
         feedView.collectionView.delegate = self
@@ -123,7 +114,7 @@ class FeedViewController: UIViewController {
 extension FeedViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Clicou no item \(indexPath.item)")
+        print("DEBUG: Clicou no item \(indexPath.item)")
     }
 }
 

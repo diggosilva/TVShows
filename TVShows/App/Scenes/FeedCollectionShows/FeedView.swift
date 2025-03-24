@@ -95,7 +95,3 @@ class FeedView: UIView {
         ])
     }
 }
-
-#Preview {
-    FeedViewController()
-}
