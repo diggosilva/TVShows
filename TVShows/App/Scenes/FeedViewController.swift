@@ -7,11 +7,19 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class FeedViewController: UIViewController {
+    
+    let service = Service()
+    var listShows: [Show] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        title = "TV Shows"
+        
+        service.getShows(url: "shows") { result in
+            
+        }
     }
 
 }
