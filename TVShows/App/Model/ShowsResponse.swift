@@ -1,3 +1,10 @@
+//
+//  ShowsResponse.swift
+//  TVShows
+//
+//  Created by Diggo Silva on 23/03/25.
+//
+
 import Foundation
 
 // MARK: - ShowsResponseElement
@@ -187,5 +194,3 @@ enum TypeEnum: String, Codable {
     case scripted = "Scripted"
     case talkShow = "Talk Show"
 }
-
-//typealias ShowsResponse = [ShowsResponseElement]
