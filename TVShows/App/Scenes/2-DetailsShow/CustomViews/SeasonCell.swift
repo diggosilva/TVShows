@@ -6,33 +6,15 @@
 //
 
 import UIKit
+import SDWebImage
 
 class SeasonCell: UICollectionViewCell {
     
     static let identifier = "SeasonCell"
     
-    lazy var imageView: UIImageView = {
-        let iv = UIImageView()
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
-        iv.layer.cornerRadius = 10
-        return iv
-    }()
-    
-    lazy var seasonsLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .headline)
-        return label
-    }()
-    
-    lazy var episodesLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .title1)
-        return label
-    }()
+    lazy var imageView = DSViewBuilder.buildImageView(cornerRadius: 10)
+    lazy var seasonsLabel = DSViewBuilder.buildLabel(font: .preferredFont(forTextStyle: .headline))
+    lazy var episodesLabel = DSViewBuilder.buildLabel(font: .preferredFont(forTextStyle: .title1))
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -42,14 +24,19 @@ class SeasonCell: UICollectionViewCell {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func configure(season: Season) {
-        guard let url = URL(string: season.image) else { return }
+        guard let imageMedium = season.image.medium,
+              let url = URL(string: imageMedium),
+              let episodes = season.episodes else {
+            return
+        }
         
         imageView.sd_setImage(with: url)
         seasonsLabel.text = "Temporada \(season.number)"
-        episodesLabel.text = "\(season.episodes) Episódios"
+        episodesLabel.text = "\(episodes) Episódios"
         
         setupLayoutCell()
     }
+
     
     private func setupLayoutCell() {
         layer.borderWidth = 2

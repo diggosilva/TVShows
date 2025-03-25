@@ -12,24 +12,8 @@ class CastCell: UICollectionViewCell {
     
     static let identifier = "CastCell"
     
-    lazy var imageView: UIImageView = {
-        let iv = UIImageView()
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
-        iv.layer.cornerRadius = 40
-        iv.layer.borderWidth = 2
-        iv.layer.borderColor = UIColor.systemGray3.cgColor
-        return iv
-    }()
-    
-    lazy var nameLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .footnote)
-        label.textAlignment = .center
-        return label
-    }()
+    lazy var imageView = DSViewBuilder.buildImageView(cornerRadius: 40, borderWidth: 2)    
+    lazy var nameLabel = DSViewBuilder.buildLabel(textAlignment: .center, font: .preferredFont(forTextStyle: .footnote))
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -39,7 +23,8 @@ class CastCell: UICollectionViewCell {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func configure(cast: Cast) {
-        guard let url = URL(string: cast.image) else { return }
+        guard let imageMedium = cast.image.medium,
+              let url = URL(string: imageMedium) else { return }
         
         imageView.sd_setImage(with: url)
         nameLabel.text = cast.name
@@ -71,7 +56,7 @@ class CastCell: UICollectionViewCell {
     }
 }
 
-#Preview {
-    let show: Show = .init(id: 1, name: "Test", image: "", rating: nil)
-    DetailsViewController(viewModel: DetailsViewModel(show: show))
-}
+//#Preview {
+//    let show: Show = .init(id: 1, name: "Test", image: "", imageLarge: "", rating: nil)
+//    DetailsViewController(viewModel: DetailsViewModel(show: show))
+//}

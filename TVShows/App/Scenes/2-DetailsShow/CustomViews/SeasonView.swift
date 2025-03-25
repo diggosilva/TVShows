@@ -5,6 +5,7 @@
 //  Created by Diggo Silva on 24/03/25.
 //
 
+import UIKit
 
 class SeasonView: UIView {
     
