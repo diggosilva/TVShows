@@ -10,10 +10,10 @@ import Foundation
 class Season: CustomStringConvertible {
     let id: Int
     let number: String
-    let image: String
-    let episodes: Int
+    let image: (medium: String?, original: String?)
+    let episodes: Int?
     
-    init(id: Int, number: String, image: String, episodes: Int) {
+    init(id: Int, number: String, image: (medium: String?, original: String?), episodes: Int?) {
         self.id = id
         self.number = number
         self.image = image
@@ -21,7 +21,12 @@ class Season: CustomStringConvertible {
     }
     
     var description: String {
-        return "Season: id: \(id), number:\(number), image:\(image), episodes:\(episodes)"
+        if let imageMedium = image.medium,
+           let imageOriginal = image.original,
+           let episodes = episodes {
+            return "Season: id: \(id), number:\(number), imageMedium:\(imageMedium), imageOriginal:\(imageOriginal), episodes:\(episodes)"
+        }
+        
+        return "Season: id: \(id), number:\(number), image:\(String(describing: image.medium)), imageLarge:\(String(describing: image.original)), episodes:\(String(describing: episodes)))"
     }
 }
-
