@@ -8,7 +8,7 @@
 import UIKit
 
 enum DSViewBuilder {
-    static func buildImageView(cornerRadius: CGFloat? = nil, borderWidth: CGFloat? = nil) -> UIImageView {
+    static func buildImageView(image: UIImage? = SFSymbols.empty, cornerRadius: CGFloat? = nil, borderWidth: CGFloat? = nil) -> UIImageView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
@@ -16,6 +16,7 @@ enum DSViewBuilder {
         imageView.layer.cornerRadius = cornerRadius ?? 0
         imageView.layer.borderWidth = borderWidth ?? 0
         imageView.layer.borderColor = UIColor.systemGray3.cgColor
+        imageView.image = image?.withTintColor(.systemGray3, renderingMode: .alwaysOriginal)
         return imageView
     }
     
