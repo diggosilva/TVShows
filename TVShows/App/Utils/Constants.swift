@@ -8,6 +8,6 @@
 import UIKit
 
 enum SFSymbols {
-    static let movieclapper = "movieclapper"
-    static let popcorn = "popcorn"
+    static let movieclapper = UIImage(systemName: "movieclapper")
+    static let popcorn = UIImage(systemName: "popcorn")
 }

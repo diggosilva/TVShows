@@ -12,4 +12,6 @@ enum DSError: String, Error {
     case failedDecoding = "Não foi possível decodificar os dados."
     case invalidData = "Os dados recebidos do servidor eram inválidos. Tente novamente."
     case showsFailed = "Não foi possível carregar os seriados. Tente novamente."
+    case castFailed = "Não foi possível carregar a lista de atores. Tente novamente."
+    case seasonFailed = "Não foi possível carregar as temporadas. Tente novamente."
 }
