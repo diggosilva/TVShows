@@ -114,7 +114,14 @@ class FeedViewController: UIViewController {
 extension FeedViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("DEBUG: Clicou no item \(indexPath.item)")
+        let show = viewModel.showsFiltered.value[indexPath.item]
+       
+        guard let url = URL(string: show.imageLarge) else { return }
+       
+        let detailVC = DetailsViewController(viewModel: DetailsViewModel(show: show))
+        detailVC.title = show.name
+        detailVC.detailsView.coverImageView.sd_setImage(with: url)
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 
@@ -125,6 +132,7 @@ extension FeedViewController: UISearchBarDelegate {
     }
 }
 
+//MARK: SEARCH BAR
 extension FeedViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
