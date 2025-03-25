@@ -114,6 +114,8 @@ class FeedViewController: UIViewController {
 extension FeedViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailVC = DetailsViewController(viewModel: <#any DetailsViewModelProtocol#>)
+        
         print("DEBUG: Clicou no item \(indexPath.item)")
     }
 }
@@ -125,6 +127,7 @@ extension FeedViewController: UISearchBarDelegate {
     }
 }
 
+//MARK: SEARCH BAR
 extension FeedViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {

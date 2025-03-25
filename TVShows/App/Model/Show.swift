@@ -12,6 +12,7 @@ class Show: CustomStringConvertible, Hashable {
     static func == (lhs: Show, rhs: Show) -> Bool {
         return lhs.id == rhs.id &&
         lhs.image == rhs.image &&
+        lhs.imageLarge == rhs.imageLarge &&
         lhs.name == rhs.name &&
         lhs.rating == rhs.rating
     }
@@ -21,21 +22,24 @@ class Show: CustomStringConvertible, Hashable {
         hasher.combine(name)
         hasher.combine(rating)
         hasher.combine(image)
+        hasher.combine(imageLarge)
     }
     
     let id: Int
     let name: String
     let image: String
+    let imageLarge: String
     let rating: Double?
     
-    init(id: Int, name: String,  image: String, rating: Double?) {
+    init(id: Int, name: String,  image: String, imageLarge: String, rating: Double?) {
         self.id = id
         self.name = name
         self.image = image
+        self.imageLarge = imageLarge
         self.rating = rating
     }
     
     var description: String {
-        return "Show: id: \(id),  name: \(name), image: \(image), rating: \(String(describing: rating))"
+        return "Show: id: \(id),  name: \(name), image: \(image), imageLarge: \(imageLarge), rating: \(String(describing: rating))"
     }
 }
