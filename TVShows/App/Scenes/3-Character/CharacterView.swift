@@ -1,3 +1,13 @@
+//
+//  CharacterView.swift
+//  TVShows
+//
+//  Created by Diggo Silva on 26/03/25.
+//
+
+import UIKit
+import SDWebImage
+
 class CharacterView: UIView {
     
     lazy var imageView = DSViewBuilder.buildImageView(image: SFSymbols.popcorn, contentMode: .scaleAspectFill)
