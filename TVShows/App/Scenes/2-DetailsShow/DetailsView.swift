@@ -67,8 +67,3 @@ class DetailsView: UIView {
         ])
     }
 }
-
-//#Preview {
-//    let show: Show = .init(id: 1, name: "Test", image: "", rating: nil)
-//    DetailsViewController(viewModel: DetailsViewModel(show: show))
-//}

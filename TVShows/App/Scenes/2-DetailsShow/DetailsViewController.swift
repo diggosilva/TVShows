@@ -110,4 +110,19 @@ extension DetailsViewController: UICollectionViewDelegate, UICollectionViewDataS
         }
         return UICollectionViewCell()
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if collectionView == detailsView.headerView.collectionView {
+            let cast = viewModel.castForItem(at: indexPath)
+            
+            let characterVC = CharacterViewController()
+            characterVC.title = cast.name
+            characterVC.charView.configure(person: cast)
+            navigationController?.pushViewController(characterVC, animated: true)
+            
+        } else if collectionView == detailsView.footerView.collectionView {
+            print("DEBUG: Tocou na celula TEMPORADAS: \(indexPath.item)")
+        }
+    }
 }
