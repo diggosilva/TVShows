@@ -8,10 +8,10 @@
 import UIKit
 
 enum DSViewBuilder {
-    static func buildImageView(image: UIImage? = SFSymbols.empty, cornerRadius: CGFloat? = nil, borderWidth: CGFloat? = nil) -> UIImageView {
+    static func buildImageView(image: UIImage? = SFSymbols.empty, cornerRadius: CGFloat? = nil, borderWidth: CGFloat? = nil, contentMode: UIView.ContentMode = .scaleAspectFill) -> UIImageView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = contentMode
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = cornerRadius ?? 0
         imageView.layer.borderWidth = borderWidth ?? 0
@@ -28,6 +28,37 @@ enum DSViewBuilder {
         label.textAlignment = textAlignment
         label.font = font
         label.numberOfLines = numberOfLines
+        return label
+    }
+    
+    static func buildBGView() -> UIView {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 10
+        view.backgroundColor = .quaternaryLabel
+        return view
+    }
+    
+    static func buildLabelChar(text: String) -> UILabel {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .preferredFont(forTextStyle: .title2)
+        label.textAlignment = .center
+        label.text = text
+        label.backgroundColor = .secondarySystemBackground
+        label.layer.cornerRadius = 10
+        label.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        label.clipsToBounds = true
+        return label
+    }
+    
+    static func buildLabelValueChar(text: String = "") -> UILabel {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .preferredFont(forTextStyle: .title2)
+        label.textAlignment = .center
+        label.text = text
+        label.numberOfLines = 2
         return label
     }
 }
