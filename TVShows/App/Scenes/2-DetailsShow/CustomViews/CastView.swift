@@ -49,8 +49,3 @@ class CastView: UIView {
         ])
     }
 }
-
-#Preview {
-    let show: Show = .init(id: 1, name: "Test", image: "", imageLarge: "", rating: nil)
-    DetailsViewController(viewModel: DetailsViewModel(show: show))
-}
