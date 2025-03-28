@@ -9,11 +9,11 @@ import Foundation
 
 class Season: CustomStringConvertible {
     let id: Int
-    let number: String
+    let number: Int
     let image: (medium: String?, original: String?)
     let episodes: Int?
     
-    init(id: Int, number: String, image: (medium: String?, original: String?), episodes: Int?) {
+    init(id: Int, number: Int, image: (medium: String?, original: String?), episodes: Int?) {
         self.id = id
         self.number = number
         self.image = image
