@@ -11,6 +11,7 @@ protocol ServiceProtocol {
     func getShows(page: Int, completion: @escaping(Result<[Show], DSError>) -> Void)
     func getCast(id: Int, completion: @escaping(Result<[Cast], DSError>) -> Void)
     func getSeasons(id: Int, completion: @escaping(Result<[Season], DSError>) -> Void)
+    func getEpisodes(id: Int, completion: @escaping(Result<[Episode], DSError>) -> Void)
 }
 
 final class Service: ServiceProtocol {
@@ -150,6 +151,54 @@ final class Service: ServiceProtocol {
         task.resume()
     }
     
+    func getEpisodes(id: Int, completion: @escaping(Result<[Episode], DSError>) -> Void) {
+        guard let url = createURL(for: .episodes(id)) else { return }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            DispatchQueue.main.async {
+                if error != nil {
+                    completion(.failure(.episodeFailed))
+                    return
+                }
+                
+                guard let response = response as? HTTPURLResponse else {
+                    completion(.failure(.networkError))
+                    return
+                }
+                
+                print("DEBUG: Status code EPISODE: \(response.statusCode)")
+                
+                guard let data = data else {
+                    completion(.failure(.invalidData))
+                    return
+                }
+                
+                do {
+                    let episodeResponse = try JSONDecoder().decode([EpisodeResponse].self, from: data)
+                    var episodes: [Episode] = []
+                    
+                    for episode in episodeResponse {
+                        let episode = Episode(id: episode.id,
+                                              name: episode.name,
+                                              number: episode.number,
+                                              airdate: episode.airdate, airtime: episode.airtime,
+                                              rating: episode.rating?.average,
+                                              image: (episode.image?.medium, episode.image?.original),
+                                              summary: episode.summary)
+                        episodes.append(episode)
+                    }
+                    completion(.success(episodes))
+                    print("DEBUG: EPISODES: \(episodes)")
+                    
+                } catch {
+                    //                completion(.failure(.failedDecoding))
+                    print("DEBUG: EPISODE ERROR: \(error)")
+                }
+            }
+        }
+        task.resume()
+    }
+    
     private func createURL(for endpoint: TVMazeEndpoint) -> URL? {
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
@@ -171,6 +220,7 @@ enum TVMazeEndpoint {
     case id(Int)
     case cast(Int)
     case season(Int)
+    case episodes(Int)
     
     var path: String {
         switch self {
@@ -188,6 +238,9 @@ enum TVMazeEndpoint {
             
         case .season(let id):
             return "/shows/\(id)/seasons"
+            
+        case .episodes(let id):
+            return "/shows/\(id)/episodes"
         }
     }
     
@@ -206,6 +259,9 @@ enum TVMazeEndpoint {
             return nil
             
         case .season(_):
+            return nil
+            
+        case .episodes(_):
             return nil
         }
     }
