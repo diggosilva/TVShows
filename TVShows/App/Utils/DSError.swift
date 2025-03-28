@@ -14,4 +14,5 @@ enum DSError: String, Error {
     case showsFailed = "Não foi possível carregar os seriados. Tente novamente."
     case castFailed = "Não foi possível carregar a lista de atores. Tente novamente."
     case seasonFailed = "Não foi possível carregar as temporadas. Tente novamente."
+    case episodeFailed  = "Não foi possível carregar os episódios. Tente novamente."
 }

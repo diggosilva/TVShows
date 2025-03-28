@@ -11,4 +11,5 @@ enum SFSymbols {
     static let movieclapper = UIImage(systemName: "movieclapper")
     static let popcorn = UIImage(systemName: "popcorn")
     static let empty = UIImage(systemName: "circle.slash")
+    static let star = UIImage(systemName: "star.fill")
 }

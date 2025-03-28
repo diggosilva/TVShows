@@ -8,15 +8,15 @@
 import UIKit
 
 enum DSViewBuilder {
-    static func buildImageView(image: UIImage? = SFSymbols.empty, cornerRadius: CGFloat? = nil, borderWidth: CGFloat? = nil, contentMode: UIView.ContentMode = .scaleAspectFill) -> UIImageView {
+    static func buildImageView(image: UIImage? = SFSymbols.empty?.withTintColor(.systemGray3, renderingMode: .alwaysOriginal), cornerRadius: CGFloat? = nil, borderWidth: CGFloat? = nil, contentMode: UIView.ContentMode = .scaleAspectFill) -> UIImageView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = contentMode
-        imageView.clipsToBounds = true
         imageView.layer.cornerRadius = cornerRadius ?? 0
         imageView.layer.borderWidth = borderWidth ?? 0
         imageView.layer.borderColor = UIColor.systemGray3.cgColor
-        imageView.image = image?.withTintColor(.systemGray3, renderingMode: .alwaysOriginal)
+        imageView.image = image
+        imageView.clipsToBounds = true
         return imageView
     }
     
