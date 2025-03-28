@@ -37,23 +37,8 @@ class FeedView: UIView {
         return cv
     }()
     
-    lazy var spinner: UIActivityIndicatorView = {
-        let spinner = UIActivityIndicatorView(style: .large)
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.startAnimating()
-        return spinner
-    }()
-    
-    lazy var loadingLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .secondaryLabel
-        label.font = .preferredFont(forTextStyle: .headline)
-        label.textAlignment = .center
-        label.isHidden = true
-        label.text = "Carregando..."
-        return label
-    }()
+    lazy var spinner = DSViewBuilder.buildSpinner()
+    lazy var loadingLabel = DSViewBuilder.buildLoadingLabel()
     
     var dataSource: UICollectionViewDiffableDataSource<Section, Show>!
     

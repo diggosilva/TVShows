@@ -10,6 +10,7 @@ import Foundation
 class Episode: CustomStringConvertible {
     let id: Int
     let name: String
+    let season: Int
     let number: Int
     let airdate: String
     let airtime: String
@@ -17,9 +18,10 @@ class Episode: CustomStringConvertible {
     let image: (medium: String?, original: String?)
     let summary: String
     
-    init(id: Int, name: String, number: Int, airdate: String, airtime: String, rating: Double?, image: (medium: String?, original: String?), summary: String) {
+    init(id: Int, name: String, season: Int, number: Int, airdate: String, airtime: String, rating: Double?, image: (medium: String?, original: String?), summary: String) {
         self.id = id
         self.name = name
+        self.season = season
         self.number = number
         self.airdate = airdate
         self.airtime = airtime
@@ -42,8 +44,8 @@ class Episode: CustomStringConvertible {
         if let mediumImage = image.medium,
            let originalImage = image.original,
            let rate = rating {
-            return "Episode: id: \(id), name: \(name), number: \(number), airdate: \(airdate), airtime: \(airtime), rating: \(rate), image: \(mediumImage), imageLarge: \(originalImage), summary: \(summaryShort)"
+            return "Episode: id: \(id), name: \(name), season: \(season), number: \(number), airdate: \(airdate), airtime: \(airtime), rating: \(rate), image: \(mediumImage), imageLarge: \(originalImage), summary: \(summaryShort)"
         }
-        return "Episode: id: \(id), name: \(name), number: \(number), airdate: \(airdate), airtime: \(airtime), rating: \(String(describing: rating)), image: \(String(describing: image.medium)), imageLarge: \(String(describing: image.original)), summary: \(summaryShort)"
+        return "Episode: id: \(id), name: \(name), season: \(season), number: \(number), airdate: \(airdate), airtime: \(airtime), rating: \(String(describing: rating)), image: \(String(describing: image.medium)), imageLarge: \(String(describing: image.original)), summary: \(summaryShort)"
     }
 }

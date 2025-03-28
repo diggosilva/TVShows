@@ -59,12 +59,19 @@ class DetailsViewController: UIViewController {
     
     func handleSpinner(isLoading: Bool) {
         if isLoading {
-//            detailsView.headerView.spinner.startAnimating()
-//            detailsView.headerView.loadingLabel.isHidden = false
+            detailsView.headerView.spinner.startAnimating()
+            detailsView.footerView.spinner.startAnimating()
+            
+            detailsView.headerView.loadingLabel.isHidden = false
+            detailsView.footerView.loadingLabel.isHidden = false
             
         } else {
-//            detailsView.headerView.spinner.stopAnimating()
-//            detailsView.headerView.loadingLabel.isHidden = true
+            detailsView.headerView.spinner.stopAnimating()
+            detailsView.footerView.spinner.stopAnimating()
+            
+            detailsView.headerView.loadingLabel.isHidden = true
+            detailsView.footerView.loadingLabel.isHidden = true
+            
             detailsView.headerView.collectionView.reloadData()
             detailsView.footerView.collectionView.reloadData()
         }
@@ -125,7 +132,9 @@ extension DetailsViewController: UICollectionViewDelegate, UICollectionViewDataS
             
             if collectionView == detailsView.footerView.collectionView {
                 let show = viewModel.show
-                let episodeVC = EpisodesViewController(viewModel: EpisodesViewModel(show: show))
+                let seasonNumber = indexPath.item + 1
+                
+                let episodeVC = EpisodesViewController(viewModel: EpisodesViewModel(show: show, season: seasonNumber))
                 episodeVC.title = "Temporada \(indexPath.item + 1)"
                 navigationController?.pushViewController(episodeVC, animated: true)
             }

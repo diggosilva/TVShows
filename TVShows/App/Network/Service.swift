@@ -134,7 +134,7 @@ final class Service: ServiceProtocol {
                     
                     for season in seasonResponse {
                         let season = Season(id: season.id,
-                                            number: String(season.number),
+                                            number: season.number,
                                             image: (season.image?.medium, season.image?.original),
                                             episodes: season.episodeOrder)
                         seasons.append(season)
@@ -180,7 +180,7 @@ final class Service: ServiceProtocol {
                     for episode in episodeResponse {
                         let episode = Episode(id: episode.id,
                                               name: episode.name,
-                                              number: episode.number,
+                                              season: episode.season, number: episode.number,
                                               airdate: episode.airdate, airtime: episode.airtime,
                                               rating: episode.rating?.average,
                                               image: (episode.image?.medium, episode.image?.original),
@@ -211,58 +211,5 @@ final class Service: ServiceProtocol {
         
         print("DEBUG: URL: \(String(describing: urlComponents.url))")
         return urlComponents.url
-    }
-}
-
-enum TVMazeEndpoint {
-    case shows
-    case page(Int)
-    case id(Int)
-    case cast(Int)
-    case season(Int)
-    case episodes(Int)
-    
-    var path: String {
-        switch self {
-        case .shows:
-            return "/shows"
-       
-        case .page(_):
-            return "/shows"
-       
-        case .id(let id):
-            return "/shows/\(id)"
-       
-        case .cast(let id):
-            return "/shows/\(id)/cast"
-            
-        case .season(let id):
-            return "/shows/\(id)/seasons"
-            
-        case .episodes(let id):
-            return "/shows/\(id)/episodes"
-        }
-    }
-    
-    var queryItems: [URLQueryItem]? {
-        switch self {
-        case .shows:
-            return nil
-            
-        case .page(let page):
-            return [URLQueryItem(name: "page", value: "\(page)")]
-            
-        case .id(_):
-            return nil
-            
-        case .cast(_):
-            return nil
-            
-        case .season(_):
-            return nil
-            
-        case .episodes(_):
-            return nil
-        }
     }
 }

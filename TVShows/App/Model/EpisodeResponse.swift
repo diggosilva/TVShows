@@ -11,6 +11,7 @@ import Foundation
 struct EpisodeResponse: Codable {
     let id: Int
     let name: String
+    let season: Int
     let number: Int
     let airdate: String
     let airtime: String
@@ -19,7 +20,7 @@ struct EpisodeResponse: Codable {
     let summary: String
     
     enum CodingKeys: String, CodingKey {
-        case id, name, number, airdate, airtime, rating, image, summary
+        case id, name, season, number, airdate, airtime, rating, image, summary
     }
     
     // MARK: - Image

@@ -23,12 +23,14 @@ class EpisodesViewModel: EpisodesViewModelProtocol {
     private(set) var state: Bindable<EpisodesViewControllerStates> = Bindable(value: .loading)
     
     var show: Show!
+    var season: Int
     private var episodes: [Episode] = []
     private let service: ServiceProtocol
     
-    init(show: Show, service: ServiceProtocol = Service()) {
+    init(show: Show, season: Int, service: ServiceProtocol = Service()) {
         self.service = service
         self.show = show
+        self.season = season
     }
     
     func numberOfRowsInSection() -> Int {
@@ -48,6 +50,7 @@ class EpisodesViewModel: EpisodesViewModelProtocol {
             switch result {
             case .success(let episodes):
                 self.episodes.append(contentsOf: episodes)
+                self.episodes = episodes.filter({ $0.season == self.season })
                 state.value = .loaded
                 
             case .failure(let error):

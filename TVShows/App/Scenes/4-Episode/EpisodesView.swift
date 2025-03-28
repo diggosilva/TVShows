@@ -17,21 +17,8 @@ class EpisodesView: UIView {
         return tableView
     }()
     
-    lazy var spinner: UIActivityIndicatorView = {
-        let spinner = UIActivityIndicatorView(style: .large)
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.hidesWhenStopped = true
-        return spinner
-    }()
-    
-    lazy var loadingLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Carregando..."
-        label.textColor = .secondaryLabel
-        label.isHidden = true
-        return label
-    }()
+    lazy var spinner = DSViewBuilder.buildSpinner()
+    lazy var loadingLabel = DSViewBuilder.buildLoadingLabel()
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -62,6 +49,7 @@ class EpisodesView: UIView {
             spinner.centerXAnchor.constraint(equalTo: centerXAnchor),
             spinner.centerYAnchor.constraint(equalTo: centerYAnchor),
             
+            loadingLabel.centerXAnchor.constraint(equalTo: spinner.centerXAnchor),
             loadingLabel.topAnchor.constraint(equalTo: spinner.bottomAnchor, constant: padding),
             loadingLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             loadingLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding)
