@@ -1,3 +1,12 @@
+//
+//  Episode.swift
+//  TVShows
+//
+//  Created by Diggo Silva on 27/03/25.
+//
+
+import Foundation
+
 class Episode: CustomStringConvertible {
     let id: Int
     let name: String

@@ -1,3 +1,12 @@
+//
+//  EpisodeResponse.swift
+//  TVShows
+//
+//  Created by Diggo Silva on 27/03/25.
+//
+
+import Foundation
+
 // MARK: - EpisodeResponseElement
 struct EpisodeResponse: Codable {
     let id: Int
