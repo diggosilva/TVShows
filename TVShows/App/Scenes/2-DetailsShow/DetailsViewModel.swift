@@ -17,6 +17,7 @@ protocol DetailsViewModelProtocol {
     var state: Bindable<DetailsViewControllerStates> { get }
     var show: Show { get }
     var casts: [Cast] { get }
+    var seasons: [Season] { get }
     
     func numberOfItemsInSection() -> Int
     func castForItem(at indexPath: IndexPath) -> Cast
