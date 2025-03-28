@@ -28,13 +28,12 @@ class EpisodeCell: UITableViewCell {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func configure(episode: Episode) {
-        guard let url = URL(string: episode.image.medium ?? ""),
-              let rate = episode.rating else { return }
+        guard let url = URL(string: episode.image.medium ?? "") else { return }
         
         epImageView.sd_setImage(with: url)
         epTitleLabel.text = episode.name
         epNumberLabel.text = "Episódio \(episode.number)"
-        epiRatingLabelValue.text = "\(rate) / 10"
+        epiRatingLabelValue.text = "\(episode.rate ?? 0) / 10"
     }
     
     private func setupView() {

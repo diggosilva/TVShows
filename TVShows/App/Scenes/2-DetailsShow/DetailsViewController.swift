@@ -125,7 +125,7 @@ extension DetailsViewController: UICollectionViewDelegate, UICollectionViewDataS
             
             let characterVC = CharacterViewController()
             characterVC.title = cast.name
-            characterVC.charView.configure(person: cast)
+            characterVC.characterView.configure(person: cast)
             navigationController?.pushViewController(characterVC, animated: true)
             
         } else if collectionView == detailsView.footerView.collectionView {

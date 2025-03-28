@@ -191,7 +191,7 @@ final class Service: ServiceProtocol {
                     print("DEBUG: EPISODES: \(episodes)")
                     
                 } catch {
-                    //                completion(.failure(.failedDecoding))
+//                    completion(.failure(.failedDecoding))
                     print("DEBUG: EPISODE ERROR: \(error)")
                 }
             }

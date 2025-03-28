@@ -24,20 +24,15 @@ class SeasonCell: UICollectionViewCell {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func configure(season: Season) {
-        guard let imageMedium = season.image.medium,
-              let url = URL(string: imageMedium),
-              let episodes = season.episodes else {
-            return
-        }
+        guard let url = URL(string: season.image.medium ?? "") else { return }
         
         imageView.sd_setImage(with: url)
         seasonsLabel.text = "Temporada \(season.number)"
-        episodesLabel.text = "\(episodes) Episódios"
+        episodesLabel.text = "\(season.episodeCount ?? 0) Episódios"
         
         setupLayoutCell()
     }
 
-    
     private func setupLayoutCell() {
         layer.borderWidth = 2
         layer.borderColor = UIColor.systemGray3.cgColor

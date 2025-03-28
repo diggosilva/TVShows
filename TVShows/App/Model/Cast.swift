@@ -13,8 +13,7 @@ class Cast: CustomStringConvertible {
     let image: (medium: String?, original: String?)
     let country: (name: String?, code: String?)
     let birthday: String?
-    let gender: String?
-    
+    var gender: String?
     
     init(id: Int, name: String, image: (medium: String?, original: String?), country: (name: String?, code: String?), birthday: String?, gender: String?) {
         self.id = id
@@ -25,14 +24,45 @@ class Cast: CustomStringConvertible {
         self.gender = gender
     }
     
-    var description: String {
-        if let gender = gender,
-           let imageMedium = image.medium,
-           let imageOriginal = image.original,
-           let countryName = country.name,
-           let countryCode = country.code {
-            return "Cast: id: \(id), name: \(name), image: \(imageMedium), imageLarge: \(imageOriginal), countryName: \(countryName)), countryCode: \(String(describing: countryCode)), birthday: \(birthday ?? ""), gender: \(String(describing: gender))"
+    var realGender: String? {
+        if gender == "Male" {
+            return "Masculino"
+        } else if gender == "Female" {
+            return "Feminino"
         }
-        return "Cast: id: \(id), name: \(name), image: \(String(describing: image.medium)), imageLarge: \(String(describing: image.original)), countryName: \(String(describing: country.name)), countryCode: \(String(describing: country.code)), birthday: \(birthday ?? ""), gender: \(String(describing: gender))"
+        return nil
+    }
+    
+    var mediumImage: String? {
+        if let imageMedium = image.medium {
+            return imageMedium
+        }
+        return nil
+    }
+    
+    var originalImage: String? {
+        if let imageOriginal = image.original {
+            return imageOriginal
+        } else {
+            return nil
+        }
+    }
+    
+    var countryName: String? {
+        if let countryName = country.name {
+            return countryName
+        }
+        return nil
+    }
+    
+    var countryCode: String? {
+        if let countryCode = country.code {
+            return countryCode
+        }
+        return nil
+    }
+    
+    var description: String {
+        return "Cast: id: \(id), name: \(name), image: \(mediumImage ?? ""), imageLarge: \(originalImage ?? ""), countryName: \(countryName ?? ""), countryCode: \(countryCode ?? ""), birthday: \(birthday ?? ""), gender: \(realGender ?? "")"
     }
 }

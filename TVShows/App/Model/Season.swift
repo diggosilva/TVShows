@@ -20,13 +20,29 @@ class Season: CustomStringConvertible {
         self.episodes = episodes
     }
     
-    var description: String {
-        if let imageMedium = image.medium,
-           let imageOriginal = image.original,
-           let episodes = episodes {
-            return "Season: id: \(id), number:\(number), imageMedium:\(imageMedium), imageOriginal:\(imageOriginal), episodes:\(episodes)"
+    var mediumImage: String? {
+        if let imageMedium = image.medium {
+            return imageMedium
         }
-        
-        return "Season: id: \(id), number:\(number), image:\(String(describing: image.medium)), imageLarge:\(String(describing: image.original)), episodes:\(String(describing: episodes)))"
+        return nil
+    }
+    
+    var originalImage: String? {
+        if let imageOriginal = image.original {
+            return imageOriginal
+        } else {
+            return nil
+        }
+    }
+    
+    var episodeCount: Int? {
+        if let episodesCount = episodes {
+            return episodesCount
+        }
+        return nil
+    }
+    
+    var description: String {
+        return "Season: id: \(id), number:\(number), imageMedium:\(mediumImage ?? ""), imageOriginal:\(originalImage ?? ""), episodes:\(episodeCount ?? 0)"
     }
 }

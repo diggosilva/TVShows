@@ -8,23 +8,6 @@
 import Foundation
 
 class Show: CustomStringConvertible, Hashable {
-    
-    static func == (lhs: Show, rhs: Show) -> Bool {
-        return lhs.id == rhs.id &&
-        lhs.image == rhs.image &&
-        lhs.imageLarge == rhs.imageLarge &&
-        lhs.name == rhs.name &&
-        lhs.rating == rhs.rating
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(name)
-        hasher.combine(rating)
-        hasher.combine(image)
-        hasher.combine(imageLarge)
-    }
-    
     let id: Int
     let name: String
     let image: String
@@ -41,5 +24,21 @@ class Show: CustomStringConvertible, Hashable {
     
     var description: String {
         return "Show: id: \(id),  name: \(name), image: \(image), imageLarge: \(imageLarge), rating: \(String(describing: rating))"
+    }
+    
+    static func == (lhs: Show, rhs: Show) -> Bool {
+        return lhs.id == rhs.id &&
+        lhs.image == rhs.image &&
+        lhs.imageLarge == rhs.imageLarge &&
+        lhs.name == rhs.name &&
+        lhs.rating == rhs.rating
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(name)
+        hasher.combine(rating)
+        hasher.combine(image)
+        hasher.combine(imageLarge)
     }
 }
