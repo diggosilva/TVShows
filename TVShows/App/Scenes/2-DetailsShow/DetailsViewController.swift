@@ -122,7 +122,13 @@ extension DetailsViewController: UICollectionViewDelegate, UICollectionViewDataS
             navigationController?.pushViewController(characterVC, animated: true)
             
         } else if collectionView == detailsView.footerView.collectionView {
-            print("DEBUG: Tocou na celula TEMPORADAS: \(indexPath.item)")
+            
+            if collectionView == detailsView.footerView.collectionView {
+                let show = viewModel.show
+                let episodeVC = EpisodesViewController(viewModel: EpisodesViewModel(show: show))
+                episodeVC.title = "Temporada \(indexPath.item + 1)"
+                navigationController?.pushViewController(episodeVC, animated: true)
+            }
         }
     }
 }

@@ -1,3 +1,24 @@
+//
+//  EpisodesViewModel.swift
+//  TVShows
+//
+//  Created by Diggo Silva on 27/03/25.
+//
+
+import Foundation
+
+enum EpisodesViewControllerStates {
+    case loading
+    case loaded
+    case error
+}
+
+protocol EpisodesViewModelProtocol {
+    func numberOfRowsInSection() -> Int
+    func cellForRow(at indexPath: IndexPath) -> Episode
+    func fetchEpisodes()
+}
+
 class EpisodesViewModel: EpisodesViewModelProtocol {
     private(set) var state: Bindable<EpisodesViewControllerStates> = Bindable(value: .loading)
     

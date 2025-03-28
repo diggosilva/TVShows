@@ -1,3 +1,12 @@
+//
+//  EpisodesView.swift
+//  TVShows
+//
+//  Created by Diggo Silva on 27/03/25.
+//
+
+import UIKit
+
 class EpisodesView: UIView {
     
     lazy var tableView: UITableView = {
