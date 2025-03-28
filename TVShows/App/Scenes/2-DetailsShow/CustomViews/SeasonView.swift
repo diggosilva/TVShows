@@ -24,6 +24,9 @@ class SeasonView: UIView {
         return cv
     }()
     
+    lazy var spinner = DSViewBuilder.buildSpinner(style: .medium)
+    lazy var loadingLabel = DSViewBuilder.buildLoadingLabel()
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupView()
@@ -37,7 +40,7 @@ class SeasonView: UIView {
     }
     
     private func setHierarchy() {
-        addSubviews(collectionView)
+        addSubviews(collectionView, spinner, loadingLabel)
     }
     
     private func setConstraints() {
@@ -46,6 +49,14 @@ class SeasonView: UIView {
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            spinner.centerXAnchor.constraint(equalTo: centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            loadingLabel.centerXAnchor.constraint(equalTo: spinner.centerXAnchor),
+            loadingLabel.topAnchor.constraint(equalTo: spinner.bottomAnchor),
+            loadingLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            loadingLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
     }
 }

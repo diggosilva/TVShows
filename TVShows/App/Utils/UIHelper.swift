@@ -61,4 +61,22 @@ enum DSViewBuilder {
         label.numberOfLines = 2
         return label
     }
+    
+    static func buildSpinner(style: UIActivityIndicatorView.Style = .large) -> UIActivityIndicatorView {
+        let spinner = UIActivityIndicatorView(style: style)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.startAnimating()
+        return spinner
+    }
+    
+    static func buildLoadingLabel() -> UILabel {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .secondaryLabel
+        label.font = .preferredFont(forTextStyle: .headline)
+        label.textAlignment = .center
+        label.isHidden = true
+        label.text = "Carregando..."
+        return label
+    }
 }
