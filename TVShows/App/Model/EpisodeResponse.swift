@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - EpisodeResponseElement
+// MARK: - EpisodeResponse
 struct EpisodeResponse: Codable {
     let id: Int
     let name: String

@@ -26,7 +26,6 @@ class EpisodesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        configureNavigationBar()
         configureDelegatesAndDataSources()
         handleStates()
         viewModel.fetchEpisodes()
@@ -59,10 +58,6 @@ class EpisodesViewController: UIViewController {
             print("DEBUG: COMPLICOU")
         }
     }
-    
-//    private func configureNavigationBar() {
-//        title = "Lista de Episodes"
-//    }
     
     private func configureDelegatesAndDataSources() {
         episodesView.tableView.delegate = self

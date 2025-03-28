@@ -9,11 +9,11 @@ import UIKit
 
 class CharacterViewController: UIViewController {
     
-    let charView = CharacterView()
+    let characterView = CharacterView()
     
     override func loadView() {
         super.loadView()
-        view = charView
+        view = characterView
     }
     
     override func viewDidLoad() {

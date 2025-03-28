@@ -42,7 +42,7 @@ enum DSViewBuilder {
     static func buildLabelChar(text: String) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .title2)
+        label.font = .preferredFont(forTextStyle: .headline)
         label.textAlignment = .center
         label.text = text
         label.backgroundColor = .secondarySystemBackground
@@ -55,7 +55,7 @@ enum DSViewBuilder {
     static func buildLabelValueChar(text: String = "") -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .title2)
+        label.font = .preferredFont(forTextStyle: .body)
         label.textAlignment = .center
         label.text = text
         label.numberOfLines = 2

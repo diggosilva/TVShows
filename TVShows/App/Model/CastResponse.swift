@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - CastResponseElement
+// MARK: - CastResponse
 struct CastResponse: Codable {
     let person: Person
 

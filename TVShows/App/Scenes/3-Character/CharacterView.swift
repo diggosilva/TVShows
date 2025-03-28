@@ -10,7 +10,7 @@ import SDWebImage
 
 class CharacterView: UIView {
     
-    lazy var imageView = DSViewBuilder.buildImageView(image: SFSymbols.popcorn, contentMode: .scaleAspectFill)
+    lazy var imageView = DSViewBuilder.buildImageView()
     
     lazy var bg1 = DSViewBuilder.buildBGView()
     lazy var labelBirthday = DSViewBuilder.buildLabelChar(text: "ANIVERSÁRIO")
@@ -36,18 +36,14 @@ class CharacterView: UIView {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func configure(person: Cast) {
-        if let url = URL(string: person.image.original ?? ""),
-           let countryName = person.country.name,
-           let countryCode = person.country.code,
-           let formattedBirthday = formatBirthday(person.birthday ?? ""),
-           let age = calculateAge(from: person.birthday ?? "") {
-            imageView.sd_setImage(with: url)
-            labelCountryResult.text = "\(countryName) - \(countryCode)"
-            labelBirthdayResult.text = formattedBirthday
-            labelAgeResult.text = "\(String(describing: age)) anos"
-        }
+        guard let url = URL(string: person.image.original ?? "") else { return }
         
-        labelGenderResult.text = person.gender
+        imageView.sd_setImage(with: url)
+        labelCountryResult.text = "\(person.countryName ?? "") - \(person.countryCode ?? "")"
+        labelBirthdayResult.text = formatBirthday(person.birthday ?? "")
+        labelAgeResult.text = "\(calculateAge(from: person.birthday ?? "") ?? 0) anos"
+        
+        labelGenderResult.text = person.realGender
     }
     
     private func setupView() {
@@ -69,13 +65,15 @@ class CharacterView: UIView {
             imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            
+            imageView.heightAnchor.constraint(greaterThanOrEqualToConstant: 300),
             imageView.bottomAnchor.constraint(lessThanOrEqualTo: bg1.topAnchor, constant: -padding),
             
            
             bg1.bottomAnchor.constraint(equalTo: bg3.topAnchor, constant: -padding),
             bg1.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
             bg1.widthAnchor.constraint(equalToConstant: 180),
-            bg1.heightAnchor.constraint(equalToConstant: 140),
+            bg1.heightAnchor.constraint(equalToConstant: 120),
             
             labelBirthday.leadingAnchor.constraint(equalTo: bg1.leadingAnchor),
             labelBirthday.trailingAnchor.constraint(equalTo: bg1.trailingAnchor),

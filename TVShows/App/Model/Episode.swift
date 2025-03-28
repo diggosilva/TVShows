@@ -30,6 +30,29 @@ class Episode: CustomStringConvertible {
         self.summary = summary
     }
     
+    var rate: Double? {
+        if let rate = rating {
+            return rate
+        } else {
+            return nil
+        }
+    }
+    
+    var mediumImage: String? {
+        if let imageMedium = image.medium {
+            return imageMedium
+        }
+        return nil
+    }
+    
+    var originalImage: String? {
+        if let imageOriginal = image.original {
+            return imageOriginal
+        } else {
+            return nil
+        }
+    }
+    
     var summaryShort: String {
         let initialSummary = "<p>"
         let finalSummary = "</p>"
@@ -41,11 +64,6 @@ class Episode: CustomStringConvertible {
     }
     
     var description: String {
-        if let mediumImage = image.medium,
-           let originalImage = image.original,
-           let rate = rating {
-            return "Episode: id: \(id), name: \(name), season: \(season), number: \(number), airdate: \(airdate), airtime: \(airtime), rating: \(rate), image: \(mediumImage), imageLarge: \(originalImage), summary: \(summaryShort)"
-        }
-        return "Episode: id: \(id), name: \(name), season: \(season), number: \(number), airdate: \(airdate), airtime: \(airtime), rating: \(String(describing: rating)), image: \(String(describing: image.medium)), imageLarge: \(String(describing: image.original)), summary: \(summaryShort)"
+        return "Episode: id: \(id), name: \(name), season: \(season), number: \(number), airdate: \(airdate), airtime: \(airtime), rating: \(rate ?? 0.0), image: \(mediumImage ?? ""), imageLarge: \(originalImage ?? ""), summary: \(summaryShort)"
     }
 }
