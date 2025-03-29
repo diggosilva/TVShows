@@ -19,6 +19,7 @@ class FeedView: UIView {
         searchBar.placeholder = "Pesquisar por series de TV"
         searchBar.searchBarStyle = .minimal
         searchBar.autocorrectionType = .no
+        searchBar.showsCancelButton = true
         return searchBar
     }()
     

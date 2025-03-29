@@ -10,7 +10,7 @@ import SDWebImage
 
 class CharacterView: UIView {
     
-    lazy var imageView = DSViewBuilder.buildImageView()
+    lazy var imageView = DSViewBuilder.buildImageView(cornerRadius: 10, borderWidth: 2)
     
     lazy var bg1 = DSViewBuilder.buildBGView()
     lazy var labelBirthday = DSViewBuilder.buildLabelChar(text: "ANIVERSÁRIO")
@@ -60,11 +60,13 @@ class CharacterView: UIView {
     
     private func setConstraints() {
         let padding: CGFloat = 10
+        let paddingLabel: CGFloat = 2
+        let paddingYLabelResult: CGFloat = 15
  
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+            imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
             
             imageView.heightAnchor.constraint(greaterThanOrEqualToConstant: 300),
             imageView.bottomAnchor.constraint(lessThanOrEqualTo: bg1.topAnchor, constant: -padding),
@@ -75,13 +77,12 @@ class CharacterView: UIView {
             bg1.widthAnchor.constraint(equalToConstant: 180),
             bg1.heightAnchor.constraint(equalToConstant: 120),
             
-            labelBirthday.leadingAnchor.constraint(equalTo: bg1.leadingAnchor),
-            labelBirthday.trailingAnchor.constraint(equalTo: bg1.trailingAnchor),
-            labelBirthday.bottomAnchor.constraint(equalTo: bg1.bottomAnchor),
-            labelBirthday.heightAnchor.constraint(equalToConstant: 50),
+            labelBirthday.leadingAnchor.constraint(equalTo: bg1.leadingAnchor, constant: paddingLabel),
+            labelBirthday.trailingAnchor.constraint(equalTo: bg1.trailingAnchor, constant: -paddingLabel),
+            labelBirthday.bottomAnchor.constraint(equalTo: bg1.bottomAnchor, constant: -paddingLabel),
             
             labelBirthdayResult.centerXAnchor.constraint(equalTo: bg1.centerXAnchor),
-            labelBirthdayResult.centerYAnchor.constraint(equalTo: bg1.centerYAnchor, constant: -25),
+            labelBirthdayResult.centerYAnchor.constraint(equalTo: bg1.centerYAnchor, constant: -paddingYLabelResult),
             labelBirthdayResult.leadingAnchor.constraint(equalTo: bg1.leadingAnchor, constant: padding),
             labelBirthdayResult.trailingAnchor.constraint(equalTo: bg1.trailingAnchor, constant: -padding),
             
@@ -92,13 +93,12 @@ class CharacterView: UIView {
             bg2.widthAnchor.constraint(equalTo: bg1.widthAnchor),
             bg2.heightAnchor.constraint(equalTo: bg1.heightAnchor),
             
-            labelAge.leadingAnchor.constraint(equalTo: bg2.leadingAnchor),
-            labelAge.trailingAnchor.constraint(equalTo: bg2.trailingAnchor),
-            labelAge.bottomAnchor.constraint(equalTo: bg2.bottomAnchor),
-            labelAge.heightAnchor.constraint(equalTo: labelBirthday.heightAnchor),
+            labelAge.leadingAnchor.constraint(equalTo: bg2.leadingAnchor, constant: paddingLabel),
+            labelAge.trailingAnchor.constraint(equalTo: bg2.trailingAnchor, constant: -paddingLabel),
+            labelAge.bottomAnchor.constraint(equalTo: bg2.bottomAnchor, constant: -paddingLabel),
             
             labelAgeResult.centerXAnchor.constraint(equalTo: bg2.centerXAnchor),
-            labelAgeResult.centerYAnchor.constraint(equalTo: bg2.centerYAnchor, constant: -25),
+            labelAgeResult.centerYAnchor.constraint(equalTo: bg2.centerYAnchor, constant: -paddingYLabelResult),
             labelAgeResult.leadingAnchor.constraint(equalTo: bg2.leadingAnchor, constant: padding),
             labelAgeResult.trailingAnchor.constraint(equalTo: bg2.trailingAnchor, constant: -padding),
             
@@ -108,13 +108,12 @@ class CharacterView: UIView {
             bg3.widthAnchor.constraint(equalToConstant: 180),
             bg3.heightAnchor.constraint(equalTo: bg1.heightAnchor),
             
-            labelGender.leadingAnchor.constraint(equalTo: bg3.leadingAnchor),
-            labelGender.trailingAnchor.constraint(equalTo: bg3.trailingAnchor),
-            labelGender.bottomAnchor.constraint(equalTo: bg3.bottomAnchor),
-            labelGender.heightAnchor.constraint(equalToConstant: 50),
+            labelGender.leadingAnchor.constraint(equalTo: bg3.leadingAnchor, constant: paddingLabel),
+            labelGender.trailingAnchor.constraint(equalTo: bg3.trailingAnchor, constant: -paddingLabel),
+            labelGender.bottomAnchor.constraint(equalTo: bg3.bottomAnchor, constant: -paddingLabel),
             
             labelGenderResult.centerXAnchor.constraint(equalTo: bg3.centerXAnchor),
-            labelGenderResult.centerYAnchor.constraint(equalTo: bg3.centerYAnchor, constant: -25),
+            labelGenderResult.centerYAnchor.constraint(equalTo: bg3.centerYAnchor, constant: -paddingYLabelResult),
             labelGenderResult.leadingAnchor.constraint(equalTo: bg3.leadingAnchor, constant: padding),
             labelGenderResult.trailingAnchor.constraint(equalTo: bg3.trailingAnchor, constant: -padding),
             
@@ -125,13 +124,12 @@ class CharacterView: UIView {
             bg4.widthAnchor.constraint(equalTo: bg1.widthAnchor),
             bg4.heightAnchor.constraint(equalTo: bg1.heightAnchor),
             
-            labelCountry.leadingAnchor.constraint(equalTo: bg4.leadingAnchor),
-            labelCountry.trailingAnchor.constraint(equalTo: bg4.trailingAnchor),
-            labelCountry.bottomAnchor.constraint(equalTo: bg4.bottomAnchor),
-            labelCountry.heightAnchor.constraint(equalTo: labelBirthday.heightAnchor),
+            labelCountry.leadingAnchor.constraint(equalTo: bg4.leadingAnchor, constant: paddingLabel),
+            labelCountry.trailingAnchor.constraint(equalTo: bg4.trailingAnchor, constant: -paddingLabel),
+            labelCountry.bottomAnchor.constraint(equalTo: bg4.bottomAnchor, constant: -paddingLabel),
             
             labelCountryResult.centerXAnchor.constraint(equalTo: bg4.centerXAnchor),
-            labelCountryResult.centerYAnchor.constraint(equalTo: bg4.centerYAnchor, constant: -25),
+            labelCountryResult.centerYAnchor.constraint(equalTo: bg4.centerYAnchor, constant: -paddingYLabelResult),
             labelCountryResult.leadingAnchor.constraint(equalTo: bg4.leadingAnchor, constant: padding),
             labelCountryResult.trailingAnchor.constraint(equalTo: bg4.trailingAnchor, constant: -padding),
         ])
