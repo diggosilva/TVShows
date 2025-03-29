@@ -59,16 +59,20 @@ class DetailsViewController: UIViewController {
     
     func handleSpinner(isLoading: Bool) {
         if isLoading {
+            detailsView.spinner.startAnimating()
             detailsView.headerView.spinner.startAnimating()
             detailsView.footerView.spinner.startAnimating()
             
+            detailsView.loadingLabel.isHidden = false
             detailsView.headerView.loadingLabel.isHidden = false
             detailsView.footerView.loadingLabel.isHidden = false
             
         } else {
+            detailsView.spinner.stopAnimating()
             detailsView.headerView.spinner.stopAnimating()
             detailsView.footerView.spinner.stopAnimating()
             
+            detailsView.loadingLabel.isHidden = true
             detailsView.headerView.loadingLabel.isHidden = true
             detailsView.footerView.loadingLabel.isHidden = true
             

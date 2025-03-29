@@ -36,6 +36,8 @@ enum DSViewBuilder {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 10
         view.backgroundColor = .quaternaryLabel
+        view.layer.borderColor = UIColor.systemGray3.cgColor
+        view.layer.borderWidth = 2
         return view
     }
     
@@ -49,6 +51,7 @@ enum DSViewBuilder {
         label.layer.cornerRadius = 10
         label.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         label.clipsToBounds = true
+        label.heightAnchor.constraint(equalToConstant: 40).isActive = true
         return label
     }
     

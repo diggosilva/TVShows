@@ -10,22 +10,20 @@ import UIKit
 class SeasonView: UIView {
     
     lazy var collectionView: UICollectionView = {
-        let padding: CGFloat = 10
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        layout.itemSize = CGSize(width: 300, height: 100)
-        
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: createSectionLayout())
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(SeasonCell.self, forCellWithReuseIdentifier: SeasonCell.identifier)
         cv.showsHorizontalScrollIndicator = false
+        cv.alwaysBounceVertical = false
         return cv
     }()
     
     lazy var spinner = DSViewBuilder.buildSpinner(style: .medium)
     lazy var loadingLabel = DSViewBuilder.buildLoadingLabel()
+    
+    private var cellsItemHeight: NSCollectionLayoutDimension = .absolute(100)
+    private var padding: CGFloat = 10
+    private lazy var contentInsets = NSDirectionalEdgeInsets(top: padding, leading: padding, bottom: padding, trailing: padding)
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -33,6 +31,21 @@ class SeasonView: UIView {
     }
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
+    func createSectionLayout() -> UICollectionViewCompositionalLayout {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: cellsItemHeight)
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.75), heightDimension: cellsItemHeight)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = padding
+        section.contentInsets = contentInsets
+        section.orthogonalScrollingBehavior = .groupPaging
+        
+        return UICollectionViewCompositionalLayout(section: section)
+    }
     
     private func setupView() {
         setHierarchy()
