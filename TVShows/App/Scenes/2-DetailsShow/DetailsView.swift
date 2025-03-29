@@ -17,9 +17,6 @@ class DetailsView: UIView {
     lazy var seasonLabel = DSViewBuilder.buildLabel(text: "Temporadas", textColor: .secondaryLabel, font: .preferredFont(forTextStyle: .headline))
     lazy var footerView = SeasonView()
     
-    lazy var spinner = DSViewBuilder.buildSpinner()
-    lazy var loadingLabel = DSViewBuilder.buildLoadingLabel()
-    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupView()
@@ -34,7 +31,7 @@ class DetailsView: UIView {
     
     private func setHierarchy() {
         backgroundColor = .systemBackground
-        addSubviews(castLabel, headerView, coverImageView, seasonLabel, footerView, spinner, loadingLabel)
+        addSubviews(castLabel, headerView, coverImageView, seasonLabel, footerView)
     }
     
     private func setConstraints() {
@@ -67,14 +64,6 @@ class DetailsView: UIView {
             footerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             footerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             footerView.heightAnchor.constraint(equalToConstant: 120),
-            
-            spinner.centerXAnchor.constraint(equalTo: centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
-            loadingLabel.centerXAnchor.constraint(equalTo: spinner.centerXAnchor),
-            loadingLabel.topAnchor.constraint(equalTo: spinner.bottomAnchor),
-            loadingLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            loadingLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
     }
 }
