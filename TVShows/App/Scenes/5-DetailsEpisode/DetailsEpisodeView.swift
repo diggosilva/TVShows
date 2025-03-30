@@ -1,3 +1,10 @@
+//
+//  DetailsEpisodeView.swift
+//  TVShows
+//
+//  Created by Diggo Silva on 29/03/25.
+//
+
 import UIKit
 import SDWebImage
 
@@ -10,7 +17,6 @@ class DetailsEpisodeView: UIView {
     lazy var hStackView = DSViewBuilder.buildStackView(arrangedSubviews: [airDateLAbel, airTimeLabel])
     
     lazy var summaryLabel = DSViewBuilder.buildLabel(textColor: .secondaryLabel, textAlignment: .left, font: .preferredFont(forTextStyle: .subheadline), numberOfLines: 0)
-    
     lazy var spinner = DSViewBuilder.buildSpinner()
     
     override init(frame: CGRect) {
