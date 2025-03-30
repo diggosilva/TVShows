@@ -82,4 +82,12 @@ enum DSViewBuilder {
         label.text = "Carregando..."
         return label
     }
+    
+    static func buildStackView(arrangedSubviews: [UIView]) -> UIStackView {
+        let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        return stackView
+    }
 }

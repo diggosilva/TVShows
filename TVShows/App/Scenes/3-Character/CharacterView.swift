@@ -28,6 +28,8 @@ class CharacterView: UIView {
     lazy var labelCountry = DSViewBuilder.buildLabelChar(text: "PAÍS")
     lazy var labelCountryResult = DSViewBuilder.buildLabelValueChar()
     
+    lazy var spinner = DSViewBuilder.buildSpinner()
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupView()
@@ -38,12 +40,18 @@ class CharacterView: UIView {
     func configure(person: Cast) {
         guard let url = URL(string: person.image.original ?? "") else { return }
         
-        imageView.sd_setImage(with: url)
-        labelCountryResult.text = "\(person.countryName ?? "") - \(person.countryCode ?? "")"
-        labelBirthdayResult.text = formatBirthday(person.birthday ?? "")
-        labelAgeResult.text = "\(calculateAge(from: person.birthday ?? "") ?? 0) anos"
-        
-        labelGenderResult.text = person.realGender
+        imageView.sd_setImage(with: url, completed: { [weak self] image, error, cacheType, url in
+            self?.spinner.stopAnimating()
+            self?.spinner.hidesWhenStopped = true
+            
+            DispatchQueue.main.async {
+                self?.labelCountryResult.text = "\(person.countryName ?? "") - \(person.countryCode ?? "")"
+                self?.labelBirthdayResult.text = self?.formatBirthday(person.birthday ?? "")
+                self?.labelAgeResult.text = "\(self?.calculateAge(from: person.birthday ?? "") ?? 0) anos"
+                
+                self?.labelGenderResult.text = person.realGender
+            }
+        })
     }
     
     private func setupView() {
@@ -54,8 +62,8 @@ class CharacterView: UIView {
     private func setHierarchy() {
         backgroundColor = .systemBackground
         addSubviews(imageView,
-            bg1, labelBirthday, labelBirthdayResult, bg2, labelAge, labelAgeResult,
-            bg3, labelGender, labelGenderResult, bg4, labelCountry, labelCountryResult)
+                    bg1, labelBirthday, labelBirthdayResult, bg2, labelAge, labelAgeResult,
+                    bg3, labelGender, labelGenderResult, bg4, labelCountry, labelCountryResult, spinner)
     }
     
     private func setConstraints() {
@@ -70,6 +78,9 @@ class CharacterView: UIView {
             
             imageView.heightAnchor.constraint(greaterThanOrEqualToConstant: 300),
             imageView.bottomAnchor.constraint(lessThanOrEqualTo: bg1.topAnchor, constant: -padding),
+            
+            spinner.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
             
            
             bg1.bottomAnchor.constraint(equalTo: bg3.topAnchor, constant: -padding),
