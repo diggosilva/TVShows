@@ -31,6 +31,18 @@ class EpisodesViewController: UIViewController {
         viewModel.fetchEpisodes()
     }
     
+    override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
+        if viewModel.numberOfRowsInSection() == 0 && !episodesView.spinner.isAnimating {
+            var config = UIContentUnavailableConfiguration.empty()
+            config.image = .init(systemName: "movieclapper")
+            config.text = "Sem Episódios"
+            config.secondaryText = "Não foi possível carregar os episódios dessa séries."
+            contentUnavailableConfiguration = config
+        } else {
+            contentUnavailableConfiguration = nil
+        }
+    }
+    
     private func handleStates() {
         viewModel.state.bind { states in
             
@@ -43,25 +55,34 @@ class EpisodesViewController: UIViewController {
     }
     
     private func showLoadingState() {
-        episodesView.spinner.startAnimating()
-        episodesView.loadingLabel.isHidden = false
+        handleSpinner(isLoading: true)
     }
     
     private func showLoadedState() {
-        episodesView.spinner.stopAnimating()
-        episodesView.loadingLabel.isHidden = true
-        episodesView.tableView.reloadData()
+        handleSpinner(isLoading: false)
     }
     
     private func showErrorState() {
         presentDSAlert(title: "Ops... algo deu errado", message: "Não foi possível carregar os episódios. Tente novamente mais tarde.") { action in
-            print("DEBUG: COMPLICOU")
+            self.handleSpinner(isLoading: false)
         }
     }
     
     private func configureDelegatesAndDataSources() {
         episodesView.tableView.delegate = self
         episodesView.tableView.dataSource = self
+    }
+    
+    func handleSpinner(isLoading: Bool) {
+        if isLoading {
+            episodesView.spinner.startAnimating()
+            episodesView.loadingLabel.isHidden = false
+        } else {
+            episodesView.spinner.stopAnimating()
+            episodesView.loadingLabel.isHidden = true
+            episodesView.tableView.reloadData()
+            setNeedsUpdateContentUnavailableConfiguration()
+        }
     }
 }
 
