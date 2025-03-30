@@ -17,7 +17,7 @@ protocol ServiceProtocol {
 final class Service: ServiceProtocol {
     
     func getShows(page: Int, completion: @escaping(Result<[Show], DSError>) -> Void) {
-        fetchData(endpoint: .page(page), decodingType: [ShowsResponse].self) { result in
+        fetchData(endpoint: .pagedShows(page: page), decodingType: [ShowsResponse].self) { result in
             switch result {
             case .success(let showsResponse):
                 let shows = showsResponse.map { show in
@@ -31,7 +31,7 @@ final class Service: ServiceProtocol {
     }
     
     func getCast(id: Int, completion: @escaping(Result<[Cast], DSError>) -> Void) {
-        fetchData(endpoint: .cast(id), decodingType: [CastResponse].self) { result in
+        fetchData(endpoint: .castForShow(id: id), decodingType: [CastResponse].self) { result in
             switch result {
             case .success(let castsResponse):
                 let casts = castsResponse.map { cast in
@@ -45,7 +45,7 @@ final class Service: ServiceProtocol {
     }
 
     func getSeasons(id: Int, completion: @escaping(Result<[Season], DSError>) -> Void) {
-        fetchData(endpoint: .season(id), decodingType: [SeasonResponse].self) { result in
+        fetchData(endpoint: .seasonsForShow(id: id), decodingType: [SeasonResponse].self) { result in
             switch result {
             case .success(let seasonsResponse):
                 let seasons = seasonsResponse.map { season in
@@ -59,7 +59,7 @@ final class Service: ServiceProtocol {
     }
     
     func getEpisodes(id: Int, completion: @escaping(Result<[Episode], DSError>) -> Void) {
-        fetchData(endpoint: .episodes(id), decodingType: [EpisodeResponse].self) { result in
+        fetchData(endpoint: .episodesForShow(id: id), decodingType: [EpisodeResponse].self) { result in
             switch result {
             case .success(let episodesResponse):
                 let episodes = episodesResponse.map { episode in
