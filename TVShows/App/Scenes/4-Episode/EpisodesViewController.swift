@@ -75,4 +75,16 @@ extension EpisodesViewController: UITableViewDelegate, UITableViewDataSource {
         cell.configure(episode: viewModel.cellForRow(at: indexPath))
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let episode = viewModel.cellForRow(at: indexPath)
+        let detailsEpisodeVC = DetailsEpisodeViewController()
+        let navController = UINavigationController(rootViewController: detailsEpisodeVC)
+        
+        detailsEpisodeVC.title = episode.name
+        detailsEpisodeVC.detailsEpisodeView.configure(episode: episode)
+        present(navController, animated: true)
+    }
 }
