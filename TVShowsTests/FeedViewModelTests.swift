@@ -11,7 +11,15 @@ import XCTest
 class MockFeed: ServiceProtocol {
     var isSuccess: Bool = true
     
-    func getShows(page: Int, completion: @escaping (Result<[Show], DSError>) -> Void) {}
+    func getShows(page: Int, completion: @escaping (Result<[Show], DSError>) -> Void) {
+        if isSuccess {
+            completion(.success([
+                Show(id: 1, name: "Teste", image: "", imageLarge: "", rating: 0.0),
+                Show(id: 2, name: "Show", image: "", imageLarge: "", rating: 0.0)]))
+        } else {
+            completion(.failure(.showsFailed))
+        }
+    }
     
     func getCast(id: Int, completion: @escaping (Result<[Cast], DSError>) -> Void) {}
     
@@ -22,5 +30,34 @@ class MockFeed: ServiceProtocol {
 
 final class TVShowsTests: XCTestCase {
     
+    func testWhenGettingShowsSuccessfully() {
+        let mockService = MockFeed()
+        let sut = FeedViewModel(service: mockService)
+        
+        XCTAssertEqual(sut.shows.count, 0)
+        
+        sut.fetchShows()
+        XCTAssertEqual(sut.numberOfItemsInSection(), 2)
+        XCTAssertEqual(sut.cellForItem(at: IndexPath(row: 1, section: 0)).name, "Show")
+        XCTAssertEqual(sut.shows.count, 2)
+        
+        sut.searchBar(textDidChange: "tes")
+        
+        XCTAssertEqual(sut.numberOfItemsInSection(), 1)
+        
+        sut.searchBar(textDidChange: "")
+        XCTAssertEqual(sut.showsFiltered.value, sut.shows)
+    }
     
+   func testWhenGettingShowsFailed() {
+        let mockService = MockFeed()
+        mockService.isSuccess = false
+        let sut = FeedViewModel(service: mockService)
+        
+        sut.fetchShows()
+        XCTAssertEqual(sut.numberOfItemsInSection(), 0)
+       XCTAssertEqual(sut.shows.count, 0)
+       XCTAssertEqual(sut.showsFiltered.value, [])
+       XCTAssertEqual(sut.state.value, .error)
+    }
 }
