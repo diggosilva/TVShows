@@ -10,7 +10,18 @@
 		920DCA102D9065E4005278D6 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 920DCA0F2D9065E4005278D6 /* SDWebImage */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		9211AD182D99A50300F9E220 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 922ABAE32D8E049500FCFB2D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 922ABAEA2D8E049500FCFB2D;
+			remoteInfo = TVShows;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		9211AD142D99A50300F9E220 /* TVShowsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TVShowsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		922ABAEB2D8E049600FCFB2D /* TVShows.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TVShows.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -25,6 +36,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		9211AD152D99A50300F9E220 /* TVShowsTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TVShowsTests;
+			sourceTree = "<group>";
+		};
 		922ABAED2D8E049600FCFB2D /* TVShows */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -36,6 +52,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		9211AD112D99A50300F9E220 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		922ABAE82D8E049500FCFB2D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -51,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				922ABAED2D8E049600FCFB2D /* TVShows */,
+				9211AD152D99A50300F9E220 /* TVShowsTests */,
 				922ABAEC2D8E049600FCFB2D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				922ABAEB2D8E049600FCFB2D /* TVShows.app */,
+				9211AD142D99A50300F9E220 /* TVShowsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -66,6 +91,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9211AD132D99A50300F9E220 /* TVShowsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9211AD1C2D99A50300F9E220 /* Build configuration list for PBXNativeTarget "TVShowsTests" */;
+			buildPhases = (
+				9211AD102D99A50300F9E220 /* Sources */,
+				9211AD112D99A50300F9E220 /* Frameworks */,
+				9211AD122D99A50300F9E220 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9211AD192D99A50300F9E220 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				9211AD152D99A50300F9E220 /* TVShowsTests */,
+			);
+			name = TVShowsTests;
+			packageProductDependencies = (
+			);
+			productName = TVShowsTests;
+			productReference = 9211AD142D99A50300F9E220 /* TVShowsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		922ABAEA2D8E049500FCFB2D /* TVShows */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 922ABAFE2D8E049700FCFB2D /* Build configuration list for PBXNativeTarget "TVShows" */;
@@ -99,6 +147,10 @@
 				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
+					9211AD132D99A50300F9E220 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 922ABAEA2D8E049500FCFB2D;
+					};
 					922ABAEA2D8E049500FCFB2D = {
 						CreatedOnToolsVersion = 16.1;
 					};
@@ -122,11 +174,19 @@
 			projectRoot = "";
 			targets = (
 				922ABAEA2D8E049500FCFB2D /* TVShows */,
+				9211AD132D99A50300F9E220 /* TVShowsTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		9211AD122D99A50300F9E220 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		922ABAE92D8E049500FCFB2D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,6 +197,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9211AD102D99A50300F9E220 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		922ABAE72D8E049500FCFB2D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -146,7 +213,51 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		9211AD192D99A50300F9E220 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 922ABAEA2D8E049500FCFB2D /* TVShows */;
+			targetProxy = 9211AD182D99A50300F9E220 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		9211AD1A2D99A50300F9E220 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 57HYQW6DAG;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.diggosilva.TVShowsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TVShows.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TVShows";
+			};
+			name = Debug;
+		};
+		9211AD1B2D99A50300F9E220 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 57HYQW6DAG;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.diggosilva.TVShowsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TVShows.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TVShows";
+			};
+			name = Release;
+		};
 		922ABAFF2D8E049700FCFB2D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -323,6 +434,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9211AD1C2D99A50300F9E220 /* Build configuration list for PBXNativeTarget "TVShowsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9211AD1A2D99A50300F9E220 /* Debug */,
+				9211AD1B2D99A50300F9E220 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		922ABAE62D8E049500FCFB2D /* Build configuration list for PBXProject "TVShows" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
