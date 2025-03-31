@@ -30,6 +30,7 @@ class MockFeed: ServiceProtocol {
 
 final class TVShowsTests: XCTestCase {
     
+    //MARK: TESTS SUCCESS
     func testWhenGettingShowsSuccessfully() {
         let mockService = MockFeed()
         let sut = FeedViewModel(service: mockService)
@@ -49,15 +50,16 @@ final class TVShowsTests: XCTestCase {
         XCTAssertEqual(sut.showsFiltered.value, sut.shows)
     }
     
-   func testWhenGettingShowsFailed() {
+    //MARK: TESTS FAILURE
+    func testWhenGettingShowsFailed() {
         let mockService = MockFeed()
         mockService.isSuccess = false
         let sut = FeedViewModel(service: mockService)
         
         sut.fetchShows()
         XCTAssertEqual(sut.numberOfItemsInSection(), 0)
-       XCTAssertEqual(sut.shows.count, 0)
-       XCTAssertEqual(sut.showsFiltered.value, [])
-       XCTAssertEqual(sut.state.value, .error)
+        XCTAssertEqual(sut.shows.count, 0)
+        XCTAssertEqual(sut.showsFiltered.value, [])
+        XCTAssertEqual(sut.state.value, .error)
     }
 }
