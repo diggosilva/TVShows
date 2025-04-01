@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Cast: CustomStringConvertible {
+class Cast {
     let id: Int
     let name: String
     let image: (medium: String?, original: String?)
@@ -60,9 +60,5 @@ class Cast: CustomStringConvertible {
             return countryCode
         }
         return nil
-    }
-    
-    var description: String {
-        return "Cast: id: \(id), name: \(name), image: \(mediumImage ?? ""), imageLarge: \(originalImage ?? ""), countryName: \(countryName ?? ""), countryCode: \(countryCode ?? ""), birthday: \(birthday ?? ""), gender: \(realGender ?? "")"
     }
 }

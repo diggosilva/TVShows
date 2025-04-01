@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Episode: CustomStringConvertible {
+class Episode {
     let id: Int
     let name: String
     let season: Int
@@ -53,17 +53,7 @@ class Episode: CustomStringConvertible {
         }
     }
     
-    var summaryShort: String {
-        let initialSummary = "<p>"
-        let finalSummary = "</p>"
-        if summary.hasPrefix(initialSummary) && summary.hasSuffix(finalSummary) {
-            return String(summary.dropFirst(3).dropLast(4))
-        } else {
-            return summary
-        }
-    }
-    
-    var description: String {
-        return "Episode: id: \(id), name: \(name), season: \(season), number: \(number), airdate: \(airdate), airtime: \(airtime), rating: \(rate ?? 0.0), image: \(mediumImage ?? ""), imageLarge: \(originalImage ?? ""), summary: \(summaryShort)"
+    var cleanSummary: String {
+        return summary.cleanHTML()
     }
 }

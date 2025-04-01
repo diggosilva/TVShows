@@ -85,7 +85,6 @@ class DetailsViewController: UIViewController {
     }
     
     @objc private func addFavoriteTapped() {
-        print("DEBUG: Clicou em Favoritar!")
         let show = viewModel.show
         viewModel.addShowToFavorite(show: show) { result in }
     }

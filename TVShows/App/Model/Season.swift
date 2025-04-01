@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Season: CustomStringConvertible {
+class Season {
     let id: Int
     let number: Int
     let image: (medium: String?, original: String?)
@@ -40,9 +40,5 @@ class Season: CustomStringConvertible {
             return episodesCount
         }
         return nil
-    }
-    
-    var description: String {
-        return "Season: id: \(id), number:\(number), imageMedium:\(mediumImage ?? ""), imageOriginal:\(originalImage ?? ""), episodes:\(episodeCount ?? 0)"
     }
 }

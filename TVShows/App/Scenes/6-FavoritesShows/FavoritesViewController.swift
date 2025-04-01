@@ -81,6 +81,7 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
         let detailVC = DetailsViewController(viewModel: DetailsViewModel(show: show))
         detailVC.title = show.name
         detailVC.detailsView.coverImageView.sd_setImage(with: url)
+        detailVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
