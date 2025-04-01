@@ -26,6 +26,8 @@ protocol DetailsViewModelProtocol {
     func numberOfSeasonsInSection() -> Int
     func seasonForItem(at indexPath: IndexPath) -> Season
     func fetchSeasons()
+    
+    func addShowToFavorite(show: Show)
 }
 
 class DetailsViewModel: DetailsViewModelProtocol {
@@ -34,11 +36,14 @@ class DetailsViewModel: DetailsViewModelProtocol {
     let show: Show
     var casts: [Cast] = []
     var seasons: [Season] = []
-    let service: ServiceProtocol
     
-    init(show: Show, service: ServiceProtocol = Service()) {
+    let service: ServiceProtocol
+    let repository: RepositoryProtocol
+    
+    init(show: Show, service: ServiceProtocol = Service(), repository: RepositoryProtocol = Repository()) {
         self.show = show
         self.service = service
+        self.repository = repository
     }
     
     //MARK: CAST
@@ -91,6 +96,18 @@ class DetailsViewModel: DetailsViewModelProtocol {
             case .failure(let error):
                 print("DEBUG: Error \(error.rawValue)")
                 state.value = .error
+            }
+        }
+    }
+    
+    //MARK: ADD SHOW TO FAVORITES
+    func addShowToFavorite(show: Show) {
+        repository.saveShow(show) { result in
+            switch result {
+            case .success:
+                print("DEBUG: Show added successfully!")
+            case .failure(let error):
+                print("DEBUG: Error \(error.localizedDescription)")
             }
         }
     }

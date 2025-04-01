@@ -31,7 +31,7 @@ class Repository: RepositoryProtocol {
         var savedShows = getShows()
         
         if savedShows.contains(where: { $0.id == show.id }) {
-            print("Essa série já foi salva!")
+            print("DEBUG: Essa série já foi salva!")
             completion(.failure(.showAlreadySaved))
             return
         }
