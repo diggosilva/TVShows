@@ -15,9 +15,10 @@ struct ShowsResponse: Codable {
     let averageRuntime: Int
     let rating: Rating
     let image: Image
+    let summary: String
 
     enum CodingKeys: String, CodingKey {
-        case id, url, name, averageRuntime, rating, image
+        case id, url, name, averageRuntime, rating, image, summary
     }
 
     // MARK: - Image

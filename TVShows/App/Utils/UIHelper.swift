@@ -83,11 +83,11 @@ enum DSViewBuilder {
         return label
     }
     
-    static func buildStackView(arrangedSubviews: [UIView]) -> UIStackView {
+    static func buildStackView(arrangedSubviews: [UIView], axis: NSLayoutConstraint.Axis = .horizontal, distribution: UIStackView.Distribution = .equalSpacing) -> UIStackView {
         let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.distribution = .equalSpacing
+        stackView.axis = axis
+        stackView.distribution = distribution
         return stackView
     }
 }

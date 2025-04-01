@@ -15,4 +15,6 @@ enum DSError: String, Error {
     case castFailed = "Não foi possível carregar a lista de atores. Tente novamente."
     case seasonFailed = "Não foi possível carregar as temporadas. Tente novamente."
     case episodeFailed  = "Não foi possível carregar os episódios. Tente novamente."
+    case showFailedToSave = "Não foi possível salvar a série na lista de favoritos."
+    case showAlreadySaved = "Esta série já está na sua lista de favoritos."
 }

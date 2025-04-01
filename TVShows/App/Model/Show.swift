@@ -7,23 +7,25 @@
 
 import Foundation
 
-class Show: CustomStringConvertible, Hashable {
+class Show: Codable, CustomStringConvertible, Hashable {
     let id: Int
     let name: String
     let image: String
     let imageLarge: String
     let rating: Double?
+    let summary: String
     
-    init(id: Int, name: String,  image: String, imageLarge: String, rating: Double?) {
+    init(id: Int, name: String,  image: String, imageLarge: String, rating: Double?, summary: String) {
         self.id = id
         self.name = name
         self.image = image
         self.imageLarge = imageLarge
         self.rating = rating
+        self.summary = summary
     }
     
     var description: String {
-        return "Show: id: \(id),  name: \(name), image: \(image), imageLarge: \(imageLarge), rating: \(String(describing: rating))"
+        return "Show: id: \(id),  name: \(name), image: \(image), imageLarge: \(imageLarge), rating: \(String(describing: rating)), summary: \(summary)"
     }
     
     static func == (lhs: Show, rhs: Show) -> Bool {
@@ -31,7 +33,8 @@ class Show: CustomStringConvertible, Hashable {
         lhs.image == rhs.image &&
         lhs.imageLarge == rhs.imageLarge &&
         lhs.name == rhs.name &&
-        lhs.rating == rhs.rating
+        lhs.rating == rhs.rating &&
+        lhs.summary == rhs.summary
     }
     
     func hash(into hasher: inout Hasher) {
@@ -40,5 +43,6 @@ class Show: CustomStringConvertible, Hashable {
         hasher.combine(rating)
         hasher.combine(image)
         hasher.combine(imageLarge)
+        hasher.combine(summary)
     }
 }
