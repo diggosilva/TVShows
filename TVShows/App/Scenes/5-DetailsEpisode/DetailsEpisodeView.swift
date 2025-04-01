@@ -36,7 +36,7 @@ class DetailsEpisodeView: UIView {
             DispatchQueue.main.async {
                 self?.airDateLAbel.text = "Exibido em: \(self?.formatBirthday(episode.airdate) ?? "N/A")"
                 self?.airTimeLabel.text = "Horário: \(episode.airtime)"
-                self?.summaryLabel.text = episode.summaryShort
+                self?.summaryLabel.text = episode.cleanSummary
             }
         })
     }

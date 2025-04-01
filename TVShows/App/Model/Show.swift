@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Show: Codable, CustomStringConvertible, Hashable {
+class Show: Codable, Hashable {
     let id: Int
     let name: String
     let image: String
@@ -24,8 +24,8 @@ class Show: Codable, CustomStringConvertible, Hashable {
         self.summary = summary
     }
     
-    var description: String {
-        return "Show: id: \(id),  name: \(name), image: \(image), imageLarge: \(imageLarge), rating: \(String(describing: rating)), summary: \(summary)"
+    var cleanSummary: String {
+        return summary.cleanHTML()
     }
     
     static func == (lhs: Show, rhs: Show) -> Bool {
