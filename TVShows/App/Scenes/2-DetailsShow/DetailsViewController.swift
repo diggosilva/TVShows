@@ -77,12 +77,15 @@ class DetailsViewController: UIViewController {
         }
     }
     
-    @objc private func shareTapped() {
+    @objc private func addFavoriteTapped() {
         print("DEBUG: Clicou em Favoritar!")
+        let show = viewModel.show
+        viewModel.addShowToFavorite(show: show)
     }
     
     private func configureNavigationBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(shareTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addFavoriteTapped))
+        navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     private func configureDelegatesAndDataSources() {
