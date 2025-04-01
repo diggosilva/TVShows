@@ -18,6 +18,7 @@ protocol DetailsViewModelProtocol {
     var show: Show { get }
     var casts: [Cast] { get }
     var seasons: [Season] { get }
+    var showAlert: ((String, String) -> Void)? { get set }
     
     func numberOfItemsInSection() -> Int
     func castForItem(at indexPath: IndexPath) -> Cast
@@ -27,7 +28,7 @@ protocol DetailsViewModelProtocol {
     func seasonForItem(at indexPath: IndexPath) -> Season
     func fetchSeasons()
     
-    func addShowToFavorite(show: Show)
+    func addShowToFavorite(show: Show, completion: @escaping(Result<String, DSError>) -> Void)
 }
 
 class DetailsViewModel: DetailsViewModelProtocol {
@@ -39,6 +40,8 @@ class DetailsViewModel: DetailsViewModelProtocol {
     
     let service: ServiceProtocol
     let repository: RepositoryProtocol
+    
+    var showAlert: ((String, String) -> Void)?
     
     init(show: Show, service: ServiceProtocol = Service(), repository: RepositoryProtocol = Repository()) {
         self.show = show
@@ -101,13 +104,15 @@ class DetailsViewModel: DetailsViewModelProtocol {
     }
     
     //MARK: ADD SHOW TO FAVORITES
-    func addShowToFavorite(show: Show) {
+    func addShowToFavorite(show: Show, completion: @escaping(Result<String, DSError>) -> Void) {
         repository.saveShow(show) { result in
-            switch result {
-            case .success:
-                print("DEBUG: Show added successfully!")
-            case .failure(let error):
-                print("DEBUG: Error \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self.showAlert?("Sucesso! 🎉", "Série adicionada aos favoritos!")
+                case .failure(let error):
+                    self.showAlert?("Ops... algo deu errado! 😅", error.rawValue)
+                }
             }
         }
     }

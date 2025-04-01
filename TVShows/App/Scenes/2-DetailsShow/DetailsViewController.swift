@@ -10,7 +10,7 @@ import UIKit
 class DetailsViewController: UIViewController {
     
     let detailsView = DetailsView()
-    let viewModel: DetailsViewModelProtocol
+    var viewModel: DetailsViewModelProtocol
     
     init(viewModel: DetailsViewModelProtocol) {
         self.viewModel = viewModel
@@ -31,6 +31,7 @@ class DetailsViewController: UIViewController {
         handleStates()
         viewModel.fetchCast()
         viewModel.fetchSeasons()
+        showAlertBinding()
     }
     
     private func handleStates() {
@@ -77,10 +78,16 @@ class DetailsViewController: UIViewController {
         }
     }
     
+    private func showAlertBinding() {
+        viewModel.showAlert = { [weak self] title, message in
+            self?.presentDSAlert(title: title, message: message)
+        }
+    }
+    
     @objc private func addFavoriteTapped() {
         print("DEBUG: Clicou em Favoritar!")
         let show = viewModel.show
-        viewModel.addShowToFavorite(show: show)
+        viewModel.addShowToFavorite(show: show) { result in }
     }
     
     private func configureNavigationBar() {
