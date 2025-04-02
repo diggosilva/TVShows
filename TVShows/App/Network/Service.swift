@@ -120,7 +120,7 @@ final class Service: ServiceProtocol {
             urlComponents.queryItems = queryItems
         }
         
-        print("DEBUG: URL: \(String(describing: urlComponents.url))")
+//        print("DEBUG: URL: \(String(describing: urlComponents.url))")
         return urlComponents.url
     }
 }

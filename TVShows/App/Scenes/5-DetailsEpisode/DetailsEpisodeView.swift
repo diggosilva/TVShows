@@ -10,7 +10,7 @@ import SDWebImage
 
 class DetailsEpisodeView: UIView {
     
-    lazy var episodeImage = DSViewBuilder.buildImageView(image: SFSymbols.popcorn, cornerRadius: 10, borderWidth: 2)
+    lazy var episodeImage = DSViewBuilder.buildImageView(cornerRadius: 10, borderWidth: 2)
     
     lazy var airDateLAbel = DSViewBuilder.buildLabel(font: .preferredFont(forTextStyle: .caption1))
     lazy var airTimeLabel = DSViewBuilder.buildLabel(font: .preferredFont(forTextStyle: .caption1))
