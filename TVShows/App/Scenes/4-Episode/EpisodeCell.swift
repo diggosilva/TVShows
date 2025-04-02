@@ -17,7 +17,7 @@ class EpisodeCell: UITableViewCell {
     lazy var epTitleLabel = DSViewBuilder.buildLabel(font: .preferredFont(forTextStyle: .headline), numberOfLines: 0)
     lazy var epNumberLabel = DSViewBuilder.buildLabel(font: .preferredFont(forTextStyle: .subheadline))
     
-    lazy var epRatingImageView = DSViewBuilder.buildImageView(image: SFSymbols.star?.withTintColor(.systemYellow, renderingMode: .alwaysOriginal))
+    lazy var epRatingImageView = DSViewBuilder.buildImageView()
     lazy var epiRatingLabelValue = DSViewBuilder.buildLabel(font: .preferredFont(forTextStyle: .subheadline))
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -29,6 +29,16 @@ class EpisodeCell: UITableViewCell {
     
     func configure(episode: Episode) {
         guard let url = URL(string: episode.image.medium ?? "") else { return }
+        
+        if let rateImage = episode.rate {
+            if rateImage < 3.3 {
+                epRatingImageView.image = SFSymbols.star?.withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+            } else if rateImage >= 3.3 && rateImage < 6.6 {
+                epRatingImageView.image = SFSymbols.starHalf?.withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+            } else {
+                epRatingImageView.image = SFSymbols.starFill?.withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+            }
+        }
         
         epImageView.sd_setImage(with: url)
         epTitleLabel.text = episode.name

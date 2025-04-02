@@ -40,7 +40,7 @@ class MockDetails: ServiceProtocol {
 }
 
 final class DetailsViewModelTests: XCTestCase {
-    let show = Show(id: 0, name: "Super Mario", image: "", imageLarge: "", rating: nil)
+    let show = Show(id: 0, name: "Super Mario", image: "", imageLarge: "", rating: nil, summary: "")
     
     //MARK: TEST CAST SUCCESS
     func testWhenCastIsSuccess() {
@@ -105,4 +105,45 @@ final class DetailsViewModelTests: XCTestCase {
         XCTAssertEqual(sut.numberOfSeasonsInSection(), 0)
         XCTAssertEqual(sut.state.value, .error)
     }
+    
+    //MARK: TEST ADD SHOW TO FAVORITES SUCCESS
+    func testWhenAddShowToFavoritesSuccess() {
+        let repository = MockRepository()
+        let sut = DetailsViewModel(show: show, service: MockDetails(), repository: repository)
+        
+        var alertTitle: String?
+        var alertMessage: String?
+        sut.showAlert = { title, message in
+            alertTitle = title
+            alertMessage = message
+        }
+        
+        sut.addShowToFavorite(show: show) { result in
+            switch result {
+            case .success:
+                XCTAssertNotNil(alertTitle, "Alert title should not be nil")
+                XCTAssertNotNil(alertMessage, "Alert message should not be nil")
+                XCTAssertEqual(alertTitle, "Sucesso! 🎉")
+                XCTAssertEqual(alertMessage, "Série adicionada aos favoritos!")
+            case .failure:
+                XCTFail("Show should have been added successfully")
+            }
+        }
+    }
+}
+
+class MockRepository: RepositoryProtocol {
+    var isSuccess: Bool = true
+    
+    func getShows() -> [Show] { return [] }
+    
+    func saveShow(_ show: Show, completion: @escaping (Result<String, DSError>) -> Void) {
+        if isSuccess {
+            completion(.success(""))
+        } else {
+            completion(.failure(.showFailedToSave))
+        }
+    }
+    
+    func saveShows(_ shows: [Show]) {}
 }

@@ -14,8 +14,8 @@ class MockFeed: ServiceProtocol {
     func getShows(page: Int, completion: @escaping (Result<[Show], DSError>) -> Void) {
         if isSuccess {
             completion(.success([
-                Show(id: 1, name: "Teste", image: "", imageLarge: "", rating: 0.0),
-                Show(id: 2, name: "Show", image: "", imageLarge: "", rating: 0.0)]))
+                Show(id: 1, name: "Teste", image: "", imageLarge: "", rating: 0.0, summary: ""),
+                Show(id: 2, name: "Show", image: "", imageLarge: "", rating: 0.0, summary: "")]))
         } else {
             completion(.failure(.showsFailed))
         }
