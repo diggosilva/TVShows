@@ -13,5 +13,6 @@ enum SFSymbols {
     static let popcornFill = UIImage(systemName: "popcorn.fill")
     static let empty = UIImage(systemName: "circle.slash")
     static let star = UIImage(systemName: "star")
+    static let starHalf = UIImage(systemName: "star.leadinghalf.filled")
     static let starFill = UIImage(systemName: "star.fill")
 }
