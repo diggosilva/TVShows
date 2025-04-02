@@ -34,7 +34,7 @@ class FeedCell: UICollectionViewCell {
     }
     
     func configure(show: Show) {
-        guard let url = URL(string: show.image) else { return }
+        guard let url = URL(string: show.mediumImage) else { return }
         
         coverImageView.sd_setImage(with: url)
         applyShadow(view: self)

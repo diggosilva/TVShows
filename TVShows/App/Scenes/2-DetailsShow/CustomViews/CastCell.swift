@@ -23,12 +23,10 @@ class CastCell: UICollectionViewCell {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func configure(cast: Cast) {
-        guard let imageMedium = cast.image.medium,
-              let url = URL(string: imageMedium) else { return }
+        guard let url = URL(string: cast.mediumImage) else { return }
         
         imageView.sd_setImage(with: url)
         nameLabel.text = cast.name
-        
     }
     
     private func setupView() {

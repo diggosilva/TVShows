@@ -20,25 +20,15 @@ class Season {
         self.episodes = episodes
     }
     
-    var mediumImage: String? {
-        if let imageMedium = image.medium {
-            return imageMedium
-        }
-        return nil
+    var mediumImage: String {
+        return image.medium ?? ""
     }
     
-    var originalImage: String? {
-        if let imageOriginal = image.original {
-            return imageOriginal
-        } else {
-            return nil
-        }
+    var originalImage: String {
+        return image.original ?? ""
     }
     
-    var episodeCount: Int? {
-        if let episodesCount = episodes {
-            return episodesCount
-        }
-        return nil
+    var episodeCount: Int {
+        return episodes ?? 0
     }
 }

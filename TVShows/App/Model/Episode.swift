@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Episode {
     let id: Int
@@ -30,30 +31,29 @@ class Episode {
         self.summary = summary
     }
     
-    var rate: Double? {
-        if let rate = rating {
-            return rate
-        } else {
-            return nil
-        }
+    var rate: Double {
+        return rating ?? 0.0
     }
     
-    var mediumImage: String? {
-        if let imageMedium = image.medium {
-            return imageMedium
-        }
-        return nil
+    var mediumImage: String {
+        return image.medium ?? ""
     }
     
-    var originalImage: String? {
-        if let imageOriginal = image.original {
-            return imageOriginal
-        } else {
-            return nil
-        }
+    var originalImage: String {
+        return image.original ?? ""
     }
     
     var cleanSummary: String {
         return summary.cleanHTML()
+    }
+    
+    func updateRatingImage(image: UIImageView) {
+        if rating ?? 0.0 < 3.3 {
+            image.image = SFSymbols.star?.withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+        } else if rating ?? 0.0 >= 3.3 && rating ?? 0.0 < 6.6 {
+            image.image = SFSymbols.starHalf?.withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+        } else {
+            image.image = SFSymbols.starFill?.withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+        }
     }
 }

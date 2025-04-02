@@ -45,9 +45,9 @@ class CharacterView: UIView {
             self?.spinner.hidesWhenStopped = true
             
             DispatchQueue.main.async {
-                self?.labelCountryResult.text = "\(person.countryName ?? "") - \(person.countryCode ?? "")"
-                self?.labelBirthdayResult.text = self?.formatBirthday(person.birthday ?? "")
-                self?.labelAgeResult.text = "\(self?.calculateAge(from: person.birthday ?? "") ?? 0) anos"
+                self?.labelCountryResult.text = "\(person.countryName) - \(person.countryCode)"
+                self?.labelBirthdayResult.text = self?.formatBirthday(person.birth)
+                self?.labelAgeResult.text = "\(self?.calculateAge(from: person.birth) ?? 0) anos"
                 
                 self?.labelGenderResult.text = person.realGender
             }

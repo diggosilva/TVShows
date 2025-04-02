@@ -28,22 +28,13 @@ class EpisodeCell: UITableViewCell {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func configure(episode: Episode) {
-        guard let url = URL(string: episode.image.medium ?? "") else { return }
-        
-        if let rateImage = episode.rate {
-            if rateImage < 3.3 {
-                epRatingImageView.image = SFSymbols.star?.withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
-            } else if rateImage >= 3.3 && rateImage < 6.6 {
-                epRatingImageView.image = SFSymbols.starHalf?.withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
-            } else {
-                epRatingImageView.image = SFSymbols.starFill?.withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
-            }
-        }
-        
+        guard let url = URL(string: episode.mediumImage) else { return }
+
         epImageView.sd_setImage(with: url)
         epTitleLabel.text = episode.name
         epNumberLabel.text = "Episódio \(episode.number)"
-        epiRatingLabelValue.text = "\(episode.rate ?? 0) / 10"
+        epiRatingLabelValue.text = "\(episode.rate) / 10"
+        episode.updateRatingImage(image: epRatingImageView)
     }
     
     private func setupView() {

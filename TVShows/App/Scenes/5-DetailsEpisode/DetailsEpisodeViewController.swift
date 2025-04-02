@@ -19,7 +19,6 @@ class DetailsEpisodeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
-        detailsEpisodeView.spinner.startAnimating()
     }
     
     private func configureNavigationBar() {
