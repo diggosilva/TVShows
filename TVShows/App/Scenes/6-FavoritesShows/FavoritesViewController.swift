@@ -98,6 +98,5 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
 extension FavoritesViewController: FavoritesViewModelDelegate {
     func reloadTable() {
         favoritesView.tableView.reloadData()
-        print("DEBUG: Carregou")
     }
 }

@@ -30,7 +30,7 @@ class MockEpisodes: ServiceProtocol {
 }
 
 final class EpisodesViewModelTests: XCTestCase {
-    let show = Show(id: 0, name: "Aviation", image: "", imageLarge: "", rating: nil)
+    let show = Show(id: 0, name: "Aviation", image: "", imageLarge: "", rating: nil, summary: "")
     
     //MARK: TESTS SUCCESS
     func testWhenGetEpisodesSuccess() {
