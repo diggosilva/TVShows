@@ -24,11 +24,11 @@ class SeasonCell: UICollectionViewCell {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func configure(season: Season) {
-        guard let url = URL(string: season.image.medium ?? "") else { return }
+        guard let url = URL(string: season.mediumImage) else { return }
         
         imageView.sd_setImage(with: url)
         seasonsLabel.text = "Temporada \(season.number)"
-        episodesLabel.text = "\(season.episodeCount ?? 0) Episódios"
+        episodesLabel.text = "\(season.episodeCount) Episódios"
         
         setupLayoutCell()
     }

@@ -116,7 +116,7 @@ extension FeedViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let show = viewModel.showsFiltered.value[indexPath.item]
        
-        guard let url = URL(string: show.imageLarge) else { return }
+        guard let url = URL(string: show.originalImage) else { return }
        
         let detailVC = DetailsViewController(viewModel: DetailsViewModel(show: show))
         detailVC.title = show.name

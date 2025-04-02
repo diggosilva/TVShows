@@ -21,7 +21,7 @@ final class Service: ServiceProtocol {
             switch result {
             case .success(let showsResponse):
                 let shows = showsResponse.map { show in
-                    Show(id: show.id, name: show.name, image: show.image.medium, imageLarge: show.image.original, rating: show.rating.average, summary: show.summary)
+                    Show(id: show.id, name: show.name, mediumImage: show.image.medium, originalImage: show.image.original, rating: show.rating.average, summary: show.summary)
                 }
                 completion(.success(shows))
             case .failure(_):

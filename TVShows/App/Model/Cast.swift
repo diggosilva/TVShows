@@ -24,41 +24,35 @@ class Cast {
         self.gender = gender
     }
     
-    var realGender: String? {
+    var realGender: String {
         if gender == "Male" {
             return "Masculino"
-        } else if gender == "Female" {
+        } else {
             return "Feminino"
         }
-        return nil
     }
     
-    var mediumImage: String? {
-        if let imageMedium = image.medium {
-            return imageMedium
-        }
-        return nil
+    var mediumImage: String {
+        return image.medium ?? ""
     }
     
-    var originalImage: String? {
-        if let imageOriginal = image.original {
-            return imageOriginal
-        } else {
-            return nil
-        }
+    var originalImage: String {
+        return image.original ?? ""
     }
     
-    var countryName: String? {
-        if let countryName = country.name {
-            return countryName
-        }
-        return nil
+    var countryName: String {
+        return country.name ?? ""
     }
     
-    var countryCode: String? {
-        if let countryCode = country.code {
-            return countryCode
-        }
-        return nil
+    var countryCode: String {
+        return country.code ?? ""
+    }
+    
+    var birth: String {
+        return birthday ?? ""
+    }
+    
+    var genero: String {
+        return gender ?? ""
     }
 }

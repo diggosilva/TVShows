@@ -10,16 +10,16 @@ import Foundation
 class Show: Codable, Hashable {
     let id: Int
     let name: String
-    let image: String
-    let imageLarge: String
+    let mediumImage: String
+    let originalImage: String
     let rating: Double?
     let summary: String
     
-    init(id: Int, name: String,  image: String, imageLarge: String, rating: Double?, summary: String) {
+    init(id: Int, name: String,  mediumImage: String, originalImage: String, rating: Double?, summary: String) {
         self.id = id
         self.name = name
-        self.image = image
-        self.imageLarge = imageLarge
+        self.mediumImage = mediumImage
+        self.originalImage = originalImage
         self.rating = rating
         self.summary = summary
     }
@@ -30,8 +30,8 @@ class Show: Codable, Hashable {
     
     static func == (lhs: Show, rhs: Show) -> Bool {
         return lhs.id == rhs.id &&
-        lhs.image == rhs.image &&
-        lhs.imageLarge == rhs.imageLarge &&
+        lhs.mediumImage == rhs.mediumImage &&
+        lhs.originalImage == rhs.originalImage &&
         lhs.name == rhs.name &&
         lhs.rating == rhs.rating &&
         lhs.summary == rhs.summary
@@ -41,8 +41,8 @@ class Show: Codable, Hashable {
         hasher.combine(id)
         hasher.combine(name)
         hasher.combine(rating)
-        hasher.combine(image)
-        hasher.combine(imageLarge)
+        hasher.combine(mediumImage)
+        hasher.combine(originalImage)
         hasher.combine(summary)
     }
 }

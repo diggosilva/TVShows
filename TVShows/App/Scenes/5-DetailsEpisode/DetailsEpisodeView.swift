@@ -27,7 +27,7 @@ class DetailsEpisodeView: UIView {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func configure(episode: Episode) {
-        guard let url = URL(string: episode.originalImage ?? "") else { return }
+        guard let url = URL(string: episode.originalImage) else { return }
         
         episodeImage.sd_setImage(with: url, completed: { [weak self] image, error, cacheType, url in
             self?.spinner.stopAnimating()
