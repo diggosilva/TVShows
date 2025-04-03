@@ -15,8 +15,6 @@ enum DetailsViewControllerStates {
 }
 
 protocol DetailsViewModelProtocol {
-    var state: Bindable<DetailsViewControllerStates> { get }
-    
     func getShow() -> Show
     func numberOfItemsInSection() -> Int
     func castForItem(at indexPath: IndexPath) -> Cast
@@ -27,11 +25,12 @@ protocol DetailsViewModelProtocol {
     func fetchSeasons()
     
     func addShowToFavorite(show: Show, completion: @escaping(Result<String, DSError>) -> Void)
+    func observerState(_ observer: @escaping(DetailsViewControllerStates) -> Void)
 }
 
 class DetailsViewModel: DetailsViewModelProtocol {
 
-    private(set) var state: Bindable<DetailsViewControllerStates> = Bindable(value: .loading)
+    private var state: Bindable<DetailsViewControllerStates> = Bindable(value: .loading)
     private let show: Show
     private var casts: [Cast] = []
     private var seasons: [Season] = []
@@ -115,5 +114,9 @@ class DetailsViewModel: DetailsViewModelProtocol {
                 }
             }
         }
+    }
+    
+    func observerState(_ observer: @escaping(DetailsViewControllerStates) -> Void) {
+        state.bind(observer: observer)
     }
 }

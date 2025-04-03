@@ -7,24 +7,22 @@
 
 import Foundation
 
-protocol FavoritesViewModelProtocol {
-    var shows: [Show] { get set }
-    var delegate: FavoritesViewModelDelegate? { get set }
-    
-//    func getShows() -> [Show]
-    func numberOfRowsInSection() -> Int
-    func cellForRow(at indexPath: IndexPath) -> Show
-    func loadShows()
-    func saveShows()
-}
-
 protocol FavoritesViewModelDelegate: AnyObject {
     func reloadTable()
 }
 
+protocol FavoritesViewModelProtocol {
+    func numberOfRowsInSection() -> Int
+    func cellForRow(at indexPath: IndexPath) -> Show
+    func loadShows()
+    func saveShows()
+    func removeShow(at index: Int)
+    func setDelegate(_ delegate: FavoritesViewModelDelegate)
+}
+
 class FavoritesViewModel: FavoritesViewModelProtocol {
     
-    var shows: [Show] = []
+    private var shows: [Show] = []
     private let repository: RepositoryProtocol
     
     weak var delegate: FavoritesViewModelDelegate?
@@ -33,10 +31,6 @@ class FavoritesViewModel: FavoritesViewModelProtocol {
         self.repository = repository
         loadShows()
     }
-    
-//    func getShows() -> [Show] {
-//        return shows
-//    }
     
     func numberOfRowsInSection() -> Int {
         shows.count
@@ -53,5 +47,13 @@ class FavoritesViewModel: FavoritesViewModelProtocol {
     
     func saveShows() {
         repository.saveShows(shows)
+    }
+    
+    func removeShow(at index: Int) {
+        shows.remove(at: index)
+    }
+    
+    func setDelegate(_ delegate: FavoritesViewModelDelegate) {
+        self.delegate = delegate
     }
 }

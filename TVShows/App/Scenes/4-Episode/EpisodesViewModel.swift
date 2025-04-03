@@ -17,11 +17,12 @@ protocol EpisodesViewModelProtocol {
     func numberOfRowsInSection() -> Int
     func cellForRow(at indexPath: IndexPath) -> Episode
     func fetchEpisodes()
+    func observerState(_ observer: @escaping(EpisodesViewControllerStates) -> Void)
 }
 
 class EpisodesViewModel: EpisodesViewModelProtocol {
-    private(set) var state: Bindable<EpisodesViewControllerStates> = Bindable(value: .loading)
-    
+   
+    private var state: Bindable<EpisodesViewControllerStates> = Bindable(value: .loading)
     private var show: Show!
     private var season: Int
     private var episodes: [Episode] = []
@@ -58,5 +59,9 @@ class EpisodesViewModel: EpisodesViewModelProtocol {
                 state.value = .error
             }
         }
+    }
+    
+    func observerState(_ observer: @escaping(EpisodesViewControllerStates) -> Void) {
+        state.bind(observer: observer)
     }
 }

@@ -44,7 +44,7 @@ class FavoritesViewController: UIViewController {
     private func configureDelegatesAndDataSources() {
         favoritesView.tableView.delegate = self
         favoritesView.tableView.dataSource = self
-        viewModel.delegate = self
+        viewModel.setDelegate(self)
     }
     
     override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
@@ -87,7 +87,7 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            viewModel.shows.remove(at: indexPath.row)
+            viewModel.removeShow(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
             viewModel.saveShows()
             setNeedsUpdateContentUnavailableConfiguration()

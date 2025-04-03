@@ -44,8 +44,7 @@ class EpisodesViewController: UIViewController {
     }
     
     private func handleStates() {
-        viewModel.state.bind { states in
-            
+        viewModel.observerState { states in
             switch states {
             case .loading: self.showLoadingState()
             case .loaded: self.showLoadedState()

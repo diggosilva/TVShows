@@ -24,11 +24,10 @@ protocol FeedViewModelProtocol {
 
 class FeedViewModel: FeedViewModelProtocol {
     
-    private(set) var state: Bindable<FeedViewControllerStates> = Bindable(value: .loading)
-    private(set) var shows: [Show] = []
-    private(set) var showsFiltered: [Show] = []
-    
-    var page: Int = 0
+    private var state: Bindable<FeedViewControllerStates> = Bindable(value: .loading)
+    private var shows: [Show] = []
+    private var showsFiltered: [Show] = []
+    private var page: Int = 0
     
     let service: ServiceProtocol
     
