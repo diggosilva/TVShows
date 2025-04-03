@@ -22,8 +22,8 @@ protocol EpisodesViewModelProtocol {
 class EpisodesViewModel: EpisodesViewModelProtocol {
     private(set) var state: Bindable<EpisodesViewControllerStates> = Bindable(value: .loading)
     
-    var show: Show!
-    var season: Int
+    private var show: Show!
+    private var season: Int
     private var episodes: [Episode] = []
     private let service: ServiceProtocol
     

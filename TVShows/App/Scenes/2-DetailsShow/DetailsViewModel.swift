@@ -11,15 +11,13 @@ enum DetailsViewControllerStates {
     case loading
     case loaded
     case error
+    case showAlert(title: String, message: String)
 }
 
 protocol DetailsViewModelProtocol {
     var state: Bindable<DetailsViewControllerStates> { get }
-    var show: Show { get }
-    var casts: [Cast] { get }
-    var seasons: [Season] { get }
-    var showAlert: ((String, String) -> Void)? { get set }
     
+    func getShow() -> Show
     func numberOfItemsInSection() -> Int
     func castForItem(at indexPath: IndexPath) -> Cast
     func fetchCast()
@@ -33,20 +31,22 @@ protocol DetailsViewModelProtocol {
 
 class DetailsViewModel: DetailsViewModelProtocol {
 
-    var state: Bindable<DetailsViewControllerStates> = Bindable(value: .loading)
-    let show: Show
-    var casts: [Cast] = []
-    var seasons: [Season] = []
+    private(set) var state: Bindable<DetailsViewControllerStates> = Bindable(value: .loading)
+    private let show: Show
+    private var casts: [Cast] = []
+    private var seasons: [Season] = []
     
-    let service: ServiceProtocol
-    let repository: RepositoryProtocol
-    
-    var showAlert: ((String, String) -> Void)?
-    
+    private let service: ServiceProtocol
+    private let repository: RepositoryProtocol
+        
     init(show: Show, service: ServiceProtocol = Service(), repository: RepositoryProtocol = Repository()) {
         self.show = show
         self.service = service
         self.repository = repository
+    }
+    
+    func getShow() -> Show {
+        return show
     }
     
     //MARK: CAST
@@ -109,9 +109,9 @@ class DetailsViewModel: DetailsViewModelProtocol {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self.showAlert?("Sucesso! 🎉", "Série adicionada aos favoritos!")
+                    self.state.value = .showAlert(title: "Sucesso! 🎉", message: "Série adicionada aos favoritos!")
                 case .failure(let error):
-                    self.showAlert?("Ops... algo deu errado! 😅", error.rawValue)
+                    self.state.value = .showAlert(title: "Ops... algo deu errado! 😅", message: error.rawValue)
                 }
             }
         }

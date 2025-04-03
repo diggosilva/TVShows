@@ -11,6 +11,7 @@ protocol FavoritesViewModelProtocol {
     var shows: [Show] { get set }
     var delegate: FavoritesViewModelDelegate? { get set }
     
+//    func getShows() -> [Show]
     func numberOfRowsInSection() -> Int
     func cellForRow(at indexPath: IndexPath) -> Show
     func loadShows()
@@ -24,7 +25,7 @@ protocol FavoritesViewModelDelegate: AnyObject {
 class FavoritesViewModel: FavoritesViewModelProtocol {
     
     var shows: [Show] = []
-    let repository: RepositoryProtocol
+    private let repository: RepositoryProtocol
     
     weak var delegate: FavoritesViewModelDelegate?
     
@@ -32,6 +33,10 @@ class FavoritesViewModel: FavoritesViewModelProtocol {
         self.repository = repository
         loadShows()
     }
+    
+//    func getShows() -> [Show] {
+//        return shows
+//    }
     
     func numberOfRowsInSection() -> Int {
         shows.count

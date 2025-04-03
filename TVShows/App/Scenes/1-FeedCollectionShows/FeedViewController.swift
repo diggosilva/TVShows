@@ -31,7 +31,6 @@ class FeedViewController: UIViewController {
         configureDataSource()
         handleStates()
         viewModel.fetchShows()
-        bindFilteredShows()
     }
     
     override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
@@ -46,19 +45,13 @@ class FeedViewController: UIViewController {
         }
     }
     
-    // Observa as mudanças no ShowsFiltered
-    func bindFilteredShows() {
-        viewModel.showsFiltered.bind { [weak self] shows in
-            self?.updateData(on: shows)
-        }
-    }
-    
     func handleStates() {
-        viewModel.state.bind { states in
-            switch states {
-            case .loading: self.showLoadingState()
-            case .loaded: self.showLoadedState()
-            case .error: self.showErrorState()
+        viewModel.observeState { [weak self] state in
+            switch state {
+            case .loading: self?.showLoadingState()
+            case .loaded: self?.showLoadedState()
+            case .error: self?.showErrorState()
+            case .showsFiltered(let shows): self?.updateData(on: shows)
             }
         }
     }
@@ -114,7 +107,7 @@ class FeedViewController: UIViewController {
 extension FeedViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let show = viewModel.showsFiltered.value[indexPath.item]
+        let show = viewModel.cellForItem(at: indexPath)
        
         guard let url = URL(string: show.originalImage) else { return }
        
@@ -142,15 +135,10 @@ extension FeedViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         guard let filter = searchController.searchBar.text, !filter.isEmpty else {
-            viewModel.showsFiltered.value.removeAll()
-            updateData(on: viewModel.shows)
-            viewModel.isSearching = false
+            viewModel.searchBar(textDidChange: "")
             return
         }
         
-        viewModel.isSearching = true
-        viewModel.showsFiltered.value = viewModel.shows.filter { $0.name.lowercased().contains(filter.lowercased()) }
-        updateData(on: viewModel.showsFiltered.value)
-        setNeedsUpdateContentUnavailableConfiguration()
+        viewModel.searchBar(textDidChange: filter)
     }
 }

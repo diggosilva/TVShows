@@ -11,26 +11,23 @@ enum FeedViewControllerStates {
     case loading
     case loaded
     case error
+    case showsFiltered([Show])
 }
 
 protocol FeedViewModelProtocol {
-    var state: Bindable<FeedViewControllerStates> { get }
-    var showsFiltered: Bindable<[Show]> { get }
-    var shows: [Show] { get }
-    var isSearching: Bool { get set }
-    var page: Int { get set }
     func numberOfItemsInSection() -> Int
     func cellForItem(at indexPath: IndexPath) -> Show
     func searchBar(textDidChange searchText: String)
     func fetchShows()
+    func observeState(_ observer: @escaping(FeedViewControllerStates) -> Void)
 }
 
 class FeedViewModel: FeedViewModelProtocol {
     
     private(set) var state: Bindable<FeedViewControllerStates> = Bindable(value: .loading)
-    private(set) var showsFiltered: Bindable<[Show]> = Bindable(value: [])
     private(set) var shows: [Show] = []
-    var isSearching: Bool = false
+    private(set) var showsFiltered: [Show] = []
+    
     var page: Int = 0
     
     let service: ServiceProtocol
@@ -40,19 +37,20 @@ class FeedViewModel: FeedViewModelProtocol {
     }
     
     func numberOfItemsInSection() -> Int {
-        return showsFiltered.value.count
+        return showsFiltered.count
     }
     
     func cellForItem(at indexPath: IndexPath) -> Show {
-        return showsFiltered.value[indexPath.item]
+        return showsFiltered[indexPath.item]
     }
     
     func searchBar(textDidChange searchText: String) {
         if searchText.isEmpty {
-            showsFiltered.value = shows
+            showsFiltered = shows
         } else {
-            showsFiltered.value = shows.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+            showsFiltered = shows.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         }
+        updateState(.showsFiltered(showsFiltered))
     }
     
     func fetchShows() {
@@ -64,13 +62,22 @@ class FeedViewModel: FeedViewModelProtocol {
             switch result {
             case .success(let shows):
                 self.shows.append(contentsOf: shows)
-                self.showsFiltered.value.append(contentsOf: shows)
+                self.showsFiltered.append(contentsOf: shows)
                 self.state.value = .loaded
+                self.state.value = .showsFiltered(self.showsFiltered)
                 
             case .failure(let error):
                 print("Error: \(error.rawValue)")
                 self.state.value = .error
             }
         }
+    }
+    
+    private func updateState(_ newState: FeedViewControllerStates) {
+        state.value = newState
+    }
+    
+    func observeState(_ observer: @escaping(FeedViewControllerStates) -> Void) {
+        state.bind(observer: observer)
     }
 }
