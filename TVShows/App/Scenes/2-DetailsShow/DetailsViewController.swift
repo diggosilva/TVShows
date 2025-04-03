@@ -31,15 +31,16 @@ class DetailsViewController: UIViewController {
         handleStates()
         viewModel.fetchCast()
         viewModel.fetchSeasons()
-        showAlertBinding()
     }
     
     private func handleStates() {
-        viewModel.state.bind { states in
+        viewModel.observerState { states in
             switch states {
             case .loading: self.showLoadingState()
             case .loaded: self.showLoadedState()
             case .error: self.showErrorState()
+            case .showAlert(title: let title, message: let message):
+                self.showAlertState(title: title, message: message)
             }
         }
     }
@@ -56,6 +57,10 @@ class DetailsViewController: UIViewController {
         presentDSAlert(title: "Ops... algo deu errado!", message: DSError.networkError.rawValue) { action in
             self.handleSpinner(isLoading: false)
         }
+    }
+    
+    private func showAlertState(title: String, message: String) {
+        presentDSAlert(title: title, message: message)
     }
     
     func handleSpinner(isLoading: Bool) {
@@ -78,14 +83,8 @@ class DetailsViewController: UIViewController {
         }
     }
     
-    private func showAlertBinding() {
-        viewModel.showAlert = { [weak self] title, message in
-            self?.presentDSAlert(title: title, message: message)
-        }
-    }
-    
     @objc private func addFavoriteTapped() {
-        let show = viewModel.show
+        let show = viewModel.getShow()
         viewModel.addShowToFavorite(show: show) { result in }
     }
     
@@ -140,7 +139,7 @@ extension DetailsViewController: UICollectionViewDelegate, UICollectionViewDataS
         } else if collectionView == detailsView.footerView.collectionView {
             
             if collectionView == detailsView.footerView.collectionView {
-                let show = viewModel.show
+                let show = viewModel.getShow()
                 let seasonNumber = indexPath.item + 1
                 
                 let episodeVC = EpisodesViewController(viewModel: EpisodesViewModel(show: show, season: seasonNumber))
