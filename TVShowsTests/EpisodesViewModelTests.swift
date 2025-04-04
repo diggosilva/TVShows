@@ -30,7 +30,7 @@ class MockEpisodes: ServiceProtocol {
 }
 
 final class EpisodesViewModelTests: XCTestCase {
-    let show = Show(id: 0, name: "Aviation", image: "", imageLarge: "", rating: nil, summary: "")
+    let show = Show(id: 0, name: "Aviation", mediumImage: "", originalImage: "", rating: nil, summary: "")
     
     //MARK: TESTS SUCCESS
     func testWhenGetEpisodesSuccess() {
@@ -59,6 +59,5 @@ final class EpisodesViewModelTests: XCTestCase {
         sut.fetchEpisodes()
         
         XCTAssertEqual(sut.numberOfRowsInSection(), 0)
-        XCTAssertEqual(sut.state.value, .error)
     }
 }

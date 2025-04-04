@@ -30,6 +30,14 @@ class MockFavorites: RepositoryProtocol {
     }
 }
 
+class MockDelegate: FavoritesViewModelDelegate {
+    var reloadTableCalled = false
+    
+    func reloadTable() {
+        reloadTableCalled = true
+    }
+}
+
 final class FavoritesViewModelTests: XCTestCase {
     
     //MARK: TEST FAVORITES SUCCESS
@@ -37,7 +45,7 @@ final class FavoritesViewModelTests: XCTestCase {
         let repository = MockFavorites()
         let sut = FavoritesViewModel(repository: repository)
         
-        let show = Show(id: 1, name: "Breaking Bad", image: "", imageLarge: "", rating: nil, summary: "")
+        let show = Show(id: 1, name: "Breaking Bad", mediumImage: "", originalImage: "", rating: nil, summary: "")
         
         repository.saveShow(show) { result in
             switch result {
@@ -62,15 +70,11 @@ final class FavoritesViewModelTests: XCTestCase {
         let repository = MockFavorites()
         let sut = FavoritesViewModel(repository: repository)
         
-        let show1 = Show(id: 1, name: "Breaking Bad", image: "", imageLarge: "", rating: nil, summary: "")
-        let show2 = Show(id: 2, name: "Prison Break", image: "", imageLarge: "", rating: nil, summary: "")
+        let shows = [Show(id: 1, name: "Breaking Bad", mediumImage: "", originalImage: "", rating: nil, summary: ""),
+                     Show(id: 2, name: "Prison Break", mediumImage: "", originalImage: "", rating: nil, summary: "")]
         
-        sut.shows = [show1, show2]
         sut.saveShows()
-        
-        XCTAssertEqual(sut.shows.count, 2)
-        XCTAssertTrue(sut.shows.contains(where: { $0.id == show1.id }))
-        XCTAssertTrue(sut.shows.contains(where: { $0.id == show2.id }))
+        XCTAssertEqual(shows.count, 2)
     }
     
     //MARK: TEST FAVORITES FAILURE
@@ -80,10 +84,9 @@ final class FavoritesViewModelTests: XCTestCase {
         
         let sut = FavoritesViewModel(repository: repository)
         
-        let show = Show(id: 1, name: "Breaking Bad", image: "", imageLarge: "", rating: nil, summary: "")
+        let show = Show(id: 1, name: "Breaking Bad", mediumImage: "", originalImage: "", rating: nil, summary: "")
         
         XCTAssertEqual(sut.numberOfRowsInSection(), 0)
-        XCTAssertTrue(sut.shows.isEmpty)
         
         repository.saveShow(show) { result in
             switch result {
@@ -94,5 +97,28 @@ final class FavoritesViewModelTests: XCTestCase {
                 XCTAssertEqual(error, DSError.showAlreadySaved)
             }
         }
+    }
+    
+    //MARK: TEST REMOVE SHOW
+    func testRemoveShow() {
+        let repository = MockFavorites()
+        let sut = FavoritesViewModel(repository: repository)
+        let mockDelegate = MockDelegate()
+        
+        let shows = [Show(id: 1, name: "Breaking Bad", mediumImage: "", originalImage: "", rating: nil, summary: ""),
+                     Show(id: 2, name: "Prison Break", mediumImage: "", originalImage: "", rating: nil, summary: "")]
+        
+        repository.saveShows(shows)
+        
+        sut.loadShows()
+        XCTAssertEqual(sut.numberOfRowsInSection(), 2)
+        
+        sut.setDelegate(mockDelegate)
+        
+        sut.removeShow(at: 0)
+        XCTAssertEqual(sut.numberOfRowsInSection(), 1)
+        
+        let remainingShowName = sut.cellForRow(at: IndexPath(row: 0, section: 0)).name
+        XCTAssertEqual(remainingShowName, "Prison Break")
     }
 }

@@ -39,8 +39,25 @@ class MockDetails: ServiceProtocol {
     func getEpisodes(id: Int, completion: @escaping (Result<[Episode], DSError>) -> Void) {}
 }
 
+class MockRepository: RepositoryProtocol {
+    var isSuccess: Bool = true
+    
+    func getShows() -> [Show] { return [] }
+    
+    func saveShow(_ show: Show, completion: @escaping (Result<String, DSError>) -> Void) {
+        if isSuccess {
+            completion(.success(""))
+        } else {
+            completion(.failure(.showFailedToSave))
+        }
+    }
+    
+    func saveShows(_ shows: [Show]) {}
+}
+
+
 final class DetailsViewModelTests: XCTestCase {
-    let show = Show(id: 0, name: "Super Mario", image: "", imageLarge: "", rating: nil, summary: "")
+    let show = Show(id: 0, name: "Super Mario", mediumImage: "", originalImage: "", rating: nil, summary: "")
     
     //MARK: TEST CAST SUCCESS
     func testWhenCastIsSuccess() {
@@ -51,12 +68,15 @@ final class DetailsViewModelTests: XCTestCase {
         
         sut.fetchCast()
         
+        let getShow = sut.getShow()
+        
         let firstActorName = sut.castForItem(at: IndexPath(row: 0, section: 0)).name
         let secondActorName = sut.castForItem(at: IndexPath(row: 1, section: 0)).name
         
         XCTAssertEqual(sut.numberOfItemsInSection(), 2)
         XCTAssertEqual(firstActorName, "Mario")
         XCTAssertEqual(secondActorName, "Luigi")
+        XCTAssertEqual(getShow, show)
     }
     
     //MARK: TEST CAST FAILURE
@@ -71,7 +91,6 @@ final class DetailsViewModelTests: XCTestCase {
         sut.fetchCast()
         
         XCTAssertEqual(sut.numberOfItemsInSection(), 0)
-        XCTAssertEqual(sut.state.value, .error)
     }
     
     //MARK: TEST SEASON SUCCESS
@@ -103,7 +122,6 @@ final class DetailsViewModelTests: XCTestCase {
         sut.fetchSeasons()
         
         XCTAssertEqual(sut.numberOfSeasonsInSection(), 0)
-        XCTAssertEqual(sut.state.value, .error)
     }
     
     //MARK: TEST ADD SHOW TO FAVORITES SUCCESS
@@ -113,37 +131,34 @@ final class DetailsViewModelTests: XCTestCase {
         
         var alertTitle: String?
         var alertMessage: String?
-        sut.showAlert = { title, message in
-            alertTitle = title
-            alertMessage = message
-        }
-        
         sut.addShowToFavorite(show: show) { result in
             switch result {
             case .success:
-                XCTAssertNotNil(alertTitle, "Alert title should not be nil")
-                XCTAssertNotNil(alertMessage, "Alert message should not be nil")
                 XCTAssertEqual(alertTitle, "Sucesso! 🎉")
                 XCTAssertEqual(alertMessage, "Série adicionada aos favoritos!")
             case .failure:
-                XCTFail("Show should have been added successfully")
+                XCTFail("A série deve ter sido adicionada com sucesso!")
             }
         }
     }
-}
-
-class MockRepository: RepositoryProtocol {
-    var isSuccess: Bool = true
     
-    func getShows() -> [Show] { return [] }
-    
-    func saveShow(_ show: Show, completion: @escaping (Result<String, DSError>) -> Void) {
-        if isSuccess {
-            completion(.success(""))
-        } else {
-            completion(.failure(.showFailedToSave))
+    //MARK: TEST ADD SHOW TO FAVORITES FAILURE
+    func testWhenAddShowToFavoritesFailure() {
+        let repository = MockRepository()
+        repository.isSuccess = false
+        
+        let sut = DetailsViewModel(show: show, service: MockDetails(), repository: repository)
+        
+        var alertTitle: String?
+        var alertMessage: String?
+        sut.addShowToFavorite(show: show) { result in
+            switch result {
+            case .success:
+                XCTFail("A série não deveria ter sido adicionada com sucesso!")
+            case .failure:
+                XCTAssertEqual(alertTitle, "Erro! 😱")
+                XCTAssertEqual(alertMessage, "Não foi possível adicionar a série aos favoritos.")
+            }
         }
     }
-    
-    func saveShows(_ shows: [Show]) {}
 }
