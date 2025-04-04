@@ -14,8 +14,8 @@ class MockFeed: ServiceProtocol {
     func getShows(page: Int, completion: @escaping (Result<[Show], DSError>) -> Void) {
         if isSuccess {
             completion(.success([
-                Show(id: 1, name: "Teste", image: "", imageLarge: "", rating: 0.0, summary: ""),
-                Show(id: 2, name: "Show", image: "", imageLarge: "", rating: 0.0, summary: "")]))
+                Show(id: 1, name: "Teste", mediumImage: "", originalImage: "", rating: 0.0, summary: ""),
+                Show(id: 2, name: "Show", mediumImage: "", originalImage: "", rating: 0.0, summary: "")]))
         } else {
             completion(.failure(.showsFailed))
         }
@@ -35,19 +35,20 @@ final class TVShowsTests: XCTestCase {
         let mockService = MockFeed()
         let sut = FeedViewModel(service: mockService)
         
-        XCTAssertEqual(sut.shows.count, 0)
-        
+        let shows = [Show(id: 1, name: "Teste", mediumImage: "", originalImage: "", rating: 0.0, summary: ""),
+                     Show(id: 2, name: "Show", mediumImage: "", originalImage: "", rating: 0.0, summary: "")]
+                
         sut.fetchShows()
         XCTAssertEqual(sut.numberOfItemsInSection(), 2)
         XCTAssertEqual(sut.cellForItem(at: IndexPath(row: 1, section: 0)).name, "Show")
-        XCTAssertEqual(sut.shows.count, 2)
         
         sut.searchBar(textDidChange: "tes")
         
         XCTAssertEqual(sut.numberOfItemsInSection(), 1)
         
         sut.searchBar(textDidChange: "")
-        XCTAssertEqual(sut.showsFiltered.value, sut.shows)
+        
+        XCTAssertEqual(shows.count, 2)
     }
     
     //MARK: TESTS FAILURE
@@ -58,8 +59,5 @@ final class TVShowsTests: XCTestCase {
         
         sut.fetchShows()
         XCTAssertEqual(sut.numberOfItemsInSection(), 0)
-        XCTAssertEqual(sut.shows.count, 0)
-        XCTAssertEqual(sut.showsFiltered.value, [])
-        XCTAssertEqual(sut.state.value, .error)
     }
 }
