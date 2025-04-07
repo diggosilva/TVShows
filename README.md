@@ -9,7 +9,7 @@
     </a>
 </p>
 
-A Swift iOS TV Shows app. An application built solely for study purposes. The app brings a list of TV shows, cast, seasons, episodes and details.
+A Swift iOS TV Shows app. An application built solely for study purposes. The app brings a list of TV shows, cast, seasons, episodes and details. And you can save and remove TV Shows from the favorites list.
 
 
 | Demo | Details | List |
