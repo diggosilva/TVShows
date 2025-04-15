@@ -17,7 +17,7 @@ struct EpisodeResponse: Codable {
     let airtime: String
     let rating: Rating?
     let image: Image?
-    let summary: String
+    let summary: String?
     
     enum CodingKeys: String, CodingKey {
         case id, name, season, number, airdate, airtime, rating, image, summary

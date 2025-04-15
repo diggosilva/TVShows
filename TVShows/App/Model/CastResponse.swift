@@ -24,7 +24,7 @@ struct CastResponse: Codable {
         let country: Country?
         let birthday: String?
         let gender: String?
-        let image: Image
+        let image: Image?
     }
 
     // MARK: - Country
