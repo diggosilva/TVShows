@@ -21,7 +21,7 @@ final class Service: ServiceProtocol {
             switch result {
             case .success(let showsResponse):
                 let shows = showsResponse.map { show in
-                    Show(id: show.id, name: show.name, mediumImage: show.image.medium, originalImage: show.image.original, rating: show.rating.average, summary: show.summary)
+                    Show(id: show.id, name: show.name, mediumImage: show.image?.medium, originalImage: show.image?.original, rating: show.rating.average, summary: show.summary)
                 }
                 completion(.success(shows))
             case .failure(_):
@@ -35,7 +35,7 @@ final class Service: ServiceProtocol {
             switch result {
             case .success(let castsResponse):
                 let casts = castsResponse.map { cast in
-                    Cast(id: cast.person.id, name: cast.person.name, image: (medium: cast.person.image.medium, original: cast.person.image.original), country: (name: cast.person.country?.name, code: cast.person.country?.code), birthday: cast.person.birthday, gender: cast.person.gender)
+                    Cast(id: cast.person.id, name: cast.person.name, image: (medium: cast.person.image?.medium, original: cast.person.image?.original), country: (name: cast.person.country?.name, code: cast.person.country?.code), birthday: cast.person.birthday, gender: cast.person.gender)
                 }
                 completion(.success(casts))
             case .failure(_):
@@ -86,13 +86,11 @@ final class Service: ServiceProtocol {
                     return
                 }
                 
-                guard let response = response as? HTTPURLResponse else {
+                guard response is HTTPURLResponse else {
                     completion(.failure(.networkError))
                     return
                 }
-                
-                print("DEBUG: Status code: \(response.statusCode)")
-                
+                                
                 guard let data = data else {
                     completion(.failure(.invalidData))
                     return
