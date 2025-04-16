@@ -38,6 +38,15 @@ class FeedView: UIView {
         return cv
     }()
     
+    lazy var bgSpinnerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .label
+        view.isHidden = true
+        view.alpha = 0.2
+        return view
+    }()
+    
     lazy var spinner = DSViewBuilder.buildSpinner()
     lazy var loadingLabel = DSViewBuilder.buildLoadingLabel()
     
@@ -57,7 +66,7 @@ class FeedView: UIView {
     }
     
     private func setHierarchy() {
-        addSubviews(searchBar, collectionView, spinner, loadingLabel)
+        addSubviews(searchBar, collectionView, bgSpinnerView, spinner, loadingLabel)
     }
     
     private func setConstraints() {
@@ -71,8 +80,13 @@ class FeedView: UIView {
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            spinner.centerXAnchor.constraint(equalTo: centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: centerYAnchor),
+            bgSpinnerView.topAnchor.constraint(equalTo: topAnchor),
+            bgSpinnerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            bgSpinnerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            bgSpinnerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            spinner.centerXAnchor.constraint(equalTo: bgSpinnerView.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: bgSpinnerView.centerYAnchor),
             
             loadingLabel.centerXAnchor.constraint(equalTo: spinner.centerXAnchor),
             loadingLabel.topAnchor.constraint(equalTo: spinner.bottomAnchor),
