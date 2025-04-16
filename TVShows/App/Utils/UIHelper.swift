@@ -65,17 +65,18 @@ enum DSViewBuilder {
         return label
     }
     
-    static func buildSpinner(style: UIActivityIndicatorView.Style = .large) -> UIActivityIndicatorView {
+    static func buildSpinner(style: UIActivityIndicatorView.Style = .large, color: UIColor = .gray) -> UIActivityIndicatorView {
         let spinner = UIActivityIndicatorView(style: style)
         spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.color = color
         spinner.startAnimating()
         return spinner
     }
     
-    static func buildLoadingLabel() -> UILabel {
+    static func buildLoadingLabel(color: UIColor = .secondaryLabel) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .secondaryLabel
+        label.textColor = color
         label.font = .preferredFont(forTextStyle: .headline)
         label.textAlignment = .center
         label.isHidden = true

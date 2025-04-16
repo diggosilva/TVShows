@@ -28,7 +28,7 @@ class FeedView: UIView {
         let widthScreen = (UIScreen.main.bounds.width) / 3.5
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        layout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding + 20, right: padding)
         layout.itemSize = CGSize(width: widthScreen, height: widthScreen * 1.5)
         layout.minimumLineSpacing = 15
         
@@ -43,12 +43,12 @@ class FeedView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .label
         view.isHidden = true
-        view.alpha = 0.2
+        view.alpha = 0.25
         return view
     }()
     
-    lazy var spinner = DSViewBuilder.buildSpinner()
-    lazy var loadingLabel = DSViewBuilder.buildLoadingLabel()
+    lazy var spinner = DSViewBuilder.buildSpinner(color: .systemBackground)
+    lazy var loadingLabel = DSViewBuilder.buildLoadingLabel(color: .systemBackground)
     
     var dataSource: UICollectionViewDiffableDataSource<Section, Show>!
     
