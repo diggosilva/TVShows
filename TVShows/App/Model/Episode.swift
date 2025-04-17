@@ -17,9 +17,9 @@ class Episode {
     let airtime: String
     let rating: Double?
     let image: (medium: String?, original: String?)
-    let summary: String
+    let summary: String?
     
-    init(id: Int, name: String, season: Int, number: Int, airdate: String, airtime: String, rating: Double?, image: (medium: String?, original: String?), summary: String) {
+    init(id: Int, name: String, season: Int, number: Int, airdate: String, airtime: String, rating: Double?, image: (medium: String?, original: String?), summary: String?) {
         self.id = id
         self.name = name
         self.season = season
@@ -44,7 +44,7 @@ class Episode {
     }
     
     var cleanSummary: String {
-        return summary.cleanHTML()
+        return summary?.cleanHTML() ?? ""
     }
     
     func updateRatingImage(image: UIImageView) {

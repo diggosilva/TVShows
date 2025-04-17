@@ -108,9 +108,9 @@ class DetailsViewModel: DetailsViewModelProtocol {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self.state.value = .showAlert(title: "Sucesso! 🎉", message: "Série adicionada aos favoritos!")
+                    self.state.value = .showAlert(title: "Sucesso! 🌟", message: "Série adicionada aos favoritos!")
                 case .failure(let error):
-                    self.state.value = .showAlert(title: "Ops... algo deu errado! 😅", message: error.rawValue)
+                    self.state.value = .showAlert(title: "Ops... algo deu errado! 😓", message: error.rawValue)
                 }
             }
         }

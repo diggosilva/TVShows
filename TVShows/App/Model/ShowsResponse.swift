@@ -13,8 +13,8 @@ struct ShowsResponse: Codable {
     let url: String
     let name: String
     let rating: Rating
-    let image: Image
-    let summary: String
+    let image: Image?
+    let summary: String?
 
     enum CodingKeys: String, CodingKey {
         case id, url, name, rating, image, summary

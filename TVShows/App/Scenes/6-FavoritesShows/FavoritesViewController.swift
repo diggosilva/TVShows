@@ -76,7 +76,7 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let show = viewModel.cellForRow(at: indexPath)
-        guard let url = URL(string: show.originalImage) else { return }
+        guard let url = URL(string: show.imageOriginal) else { return }
         
         let detailVC = DetailsViewController(viewModel: DetailsViewModel(show: show))
         detailVC.title = show.name

@@ -68,9 +68,11 @@ class FeedViewController: UIViewController {
     
     func handleSpinner(isLoading: Bool) {
         if isLoading {
+            feedView.bgSpinnerView.isHidden = false
             feedView.spinner.startAnimating()
             feedView.loadingLabel.isHidden = false
         } else {
+            feedView.bgSpinnerView.isHidden = true
             feedView.spinner.stopAnimating()
             feedView.loadingLabel.isHidden = true
             feedView.collectionView.reloadData()
@@ -109,13 +111,23 @@ extension FeedViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let show = viewModel.cellForItem(at: indexPath)
        
-        guard let url = URL(string: show.originalImage) else { return }
+        guard let url = URL(string: show.imageOriginal) else { return }
        
         let detailVC = DetailsViewController(viewModel: DetailsViewModel(show: show))
         detailVC.title = show.name
         detailVC.detailsView.coverImageView.sd_setImage(with: url)
         detailVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.size.height
+
+        if offsetY > contentHeight - height {
+            viewModel.fetchShows()
+        }
     }
 }
 

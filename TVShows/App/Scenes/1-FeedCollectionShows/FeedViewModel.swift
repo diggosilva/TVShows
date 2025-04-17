@@ -28,6 +28,8 @@ class FeedViewModel: FeedViewModelProtocol {
     private var shows: [Show] = []
     private var showsFiltered: [Show] = []
     private var page: Int = 0
+    private var isLoading = false
+    private var hasMorePages = true
     
     let service: ServiceProtocol
     
@@ -53,20 +55,31 @@ class FeedViewModel: FeedViewModelProtocol {
     }
     
     func fetchShows() {
+        guard !isLoading, hasMorePages else { return }
+
+        isLoading = true
         state.value = .loading
-        
+
         service.getShows(page: page) { [weak self] result in
             guard let self = self else { return }
-           
+            self.isLoading = false
+
             switch result {
-            case .success(let shows):
-                self.shows.append(contentsOf: shows)
-                self.showsFiltered.append(contentsOf: shows)
+            case .success(let newShows):
+                if newShows.isEmpty {
+                    self.hasMorePages = false
+                    return
+                }
+
+                self.page += 1
+                self.shows.append(contentsOf: newShows)
+                self.showsFiltered.append(contentsOf: newShows)
                 self.state.value = .loaded
                 self.state.value = .showsFiltered(self.showsFiltered)
                 
-            case .failure(let error):
-                print("Error: \(error.rawValue)")
+                print("DEBUG: Carregando pagina \(self.page), com \(newShows.count) shows. TOTAL DE SHOWS: \(self.shows.count)")
+
+            case .failure:
                 self.state.value = .error
             }
         }

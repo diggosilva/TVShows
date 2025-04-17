@@ -26,11 +26,11 @@ class FavoritesCell: UITableViewCell {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func configure(show: Show) {
-        guard let url = URL(string: show.mediumImage) else { return }
+        guard let url = URL(string: show.imageMedium) else { return }
         
         coverImageView.sd_setImage(with: url)
         nameLabel.text = show.name
-        summaryLabel.text = show.summary.cleanHTML()
+        summaryLabel.text = show.summary?.cleanHTML()
     }
     
     private func setupView() {
