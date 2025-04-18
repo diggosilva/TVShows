@@ -30,6 +30,7 @@ class FeedViewModel: FeedViewModelProtocol {
     private var page: Int = 0
     private var isLoading = false
     private var hasMorePages = true
+    private var isSearching = false
     
     let service: ServiceProtocol
     
@@ -47,15 +48,17 @@ class FeedViewModel: FeedViewModelProtocol {
     
     func searchBar(textDidChange searchText: String) {
         if searchText.isEmpty {
+            isSearching = false
             showsFiltered = shows
         } else {
+            isSearching = true
             showsFiltered = shows.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         }
         updateState(.showsFiltered(showsFiltered))
     }
     
     func fetchShows() {
-        guard !isLoading, hasMorePages else { return }
+        guard !isLoading, !isSearching, hasMorePages else { return }
 
         isLoading = true
         state.value = .loading
