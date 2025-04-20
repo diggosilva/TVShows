@@ -31,6 +31,7 @@ A Swift iOS TV Shows app. An application built solely for study purposes. The ap
 - Modern TableView
 - UserDefaults
 - Custom elements
+- Pagination
 - Dark Mode
 
 ## Requirements
@@ -42,6 +43,7 @@ A Swift iOS TV Shows app. An application built solely for study purposes. The ap
 ## Functionalities
 
 - [x] **TV Shows List**: Displays a list of available TV shows for viewing.
+- [x] **Pagination**: Implements pagination in the TV shows list to efficiently load and display content as the user scrolls.
 - [x] **TV Show Details**: Tapping on a show takes the user to a detailed screen with information about the cast, seasons, and episodes.
 - [x] **Favorite TV Shows**: Allows the user to favorite a TV show. This is done using `UserDefaults` to store the favorite shows.
 - [x] **Favorites Page**: Displays all TV shows that the user has favorited. From this page, users can also access the details of each show.
