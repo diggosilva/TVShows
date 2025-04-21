@@ -26,9 +26,7 @@ class FeedViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationBar()
-        configureDelegates()
-        configureDataSource()
+        configNavBarAndDelegatesAndDataSources()
         handleStates()
         viewModel.fetchShows()
     }
@@ -80,11 +78,25 @@ class FeedViewController: UIViewController {
         }
     }
     
-    private func configureNavigationBar() { title = "TV Shows" }
+    private func configNavBarAndDelegatesAndDataSources() {
+        configureNavigationBar()
+        configureDelegates()
+        configureDataSource()
+    }
+    
+    private func configureNavigationBar() {
+        title = "TV Shows"
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Pesquisar por séries de TV"
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = true
+    }
     
     private func configureDelegates() {
         feedView.collectionView.delegate = self
-        feedView.searchBar.delegate = self
     }
     
     private func configureDataSource() {
@@ -106,6 +118,7 @@ class FeedViewController: UIViewController {
     }
 }
 
+//MARK: COLLECTIONVIEW DELEGATE
 extension FeedViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -120,6 +133,7 @@ extension FeedViewController: UICollectionViewDelegate {
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
+    //MARK: PAGINATION
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
@@ -131,17 +145,6 @@ extension FeedViewController: UICollectionViewDelegate {
     }
 }
 
-extension FeedViewController: UISearchBarDelegate {
-   
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.searchBar(textDidChange: searchText)
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-    }
-}
-
 //MARK: SEARCH BAR
 extension FeedViewController: UISearchResultsUpdating {
     
@@ -150,7 +153,6 @@ extension FeedViewController: UISearchResultsUpdating {
             viewModel.searchBar(textDidChange: "")
             return
         }
-        
         viewModel.searchBar(textDidChange: filter)
     }
 }
