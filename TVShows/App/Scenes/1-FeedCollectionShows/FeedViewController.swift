@@ -11,6 +11,7 @@ class FeedViewController: UIViewController {
     
     let feedView = FeedView()
     var viewModel: FeedViewModelProtocol
+    let searchController = UISearchController(searchResultsController: nil)
     
     init(viewModel: FeedViewModelProtocol = FeedViewModel()) {
         self.viewModel = viewModel
@@ -36,7 +37,14 @@ class FeedViewController: UIViewController {
             var config = UIContentUnavailableConfiguration.empty()
             config.image = .init(systemName: "movieclapper")
             config.text = "Sem Séries"
-            config.secondaryText = "Não há séries com o título informado."
+            
+            let searchText = searchController.searchBar.text ?? ""
+            
+            if searchText.isEmpty {
+                config.secondaryText = "Nenhuma série encontrada."
+            } else {
+                config.secondaryText = "Não há séries com o título '\(searchText)'"
+            }
             contentUnavailableConfiguration = config
         } else {
             contentUnavailableConfiguration = nil
@@ -86,7 +94,6 @@ class FeedViewController: UIViewController {
     
     private func configureNavigationBar() {
         title = "TV Shows"
-        let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Pesquisar por séries de TV"
