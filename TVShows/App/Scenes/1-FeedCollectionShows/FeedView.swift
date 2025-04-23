@@ -13,16 +13,6 @@ enum Section {
 
 class FeedView: UIView {
     
-    lazy var searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        searchBar.placeholder = "Pesquisar por series de TV"
-        searchBar.searchBarStyle = .minimal
-        searchBar.autocorrectionType = .no
-        searchBar.showsCancelButton = true
-        return searchBar
-    }()
-    
     lazy var collectionView: UICollectionView = {
         let padding: CGFloat = 10
         let widthScreen = (UIScreen.main.bounds.width) / 3.5
@@ -66,16 +56,12 @@ class FeedView: UIView {
     }
     
     private func setHierarchy() {
-        addSubviews(searchBar, collectionView, bgSpinnerView, spinner, loadingLabel)
+        addSubviews(collectionView, bgSpinnerView, spinner, loadingLabel)
     }
     
     private func setConstraints() {
-        NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            searchBar.leadingAnchor.constraint(equalTo: leadingAnchor),
-            searchBar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            
-            collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+        NSLayoutConstraint.activate([            
+            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
