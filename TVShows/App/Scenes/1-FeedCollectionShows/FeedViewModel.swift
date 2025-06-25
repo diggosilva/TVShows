@@ -20,7 +20,6 @@ protocol FeedViewModelProtocol: StatefulViewModel where State == FeedViewControl
     func cellForItem(at indexPath: IndexPath) -> Show
     func searchBar(textDidChange searchText: String)
     func fetchShows()
-//    func observeState(_ observer: @escaping(FeedViewControllerStates) -> Void)
 }
 
 class FeedViewModel: FeedViewModelProtocol {
@@ -97,8 +96,4 @@ class FeedViewModel: FeedViewModelProtocol {
     private func updateState(_ newState: FeedViewControllerStates) {
         state = newState
     }
-    
-//    func observeState(_ observer: @escaping(FeedViewControllerStates) -> Void) {
-//        state.bind(observer: observer)
-//    }
 }
