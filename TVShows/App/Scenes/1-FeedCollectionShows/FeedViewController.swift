@@ -6,14 +6,16 @@
 //
 
 import UIKit
+import Combine
 
 class FeedViewController: UIViewController {
     
     let feedView = FeedView()
-    var viewModel: FeedViewModelProtocol
+    var viewModel: any FeedViewModelProtocol
     let searchController = UISearchController(searchResultsController: nil)
+    private var cancellables = Set<AnyCancellable>()
     
-    init(viewModel: FeedViewModelProtocol = FeedViewModel()) {
+    init(viewModel: any FeedViewModelProtocol = FeedViewModel()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -52,14 +54,16 @@ class FeedViewController: UIViewController {
     }
     
     func handleStates() {
-        viewModel.observeState { [weak self] state in
-            switch state {
-            case .loading: self?.showLoadingState()
-            case .loaded: self?.showLoadedState()
-            case .error: self?.showErrorState()
-            case .showsFiltered(let shows): self?.updateData(on: shows)
-            }
-        }
+        viewModel.statePublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] state in
+                switch state {
+                case .loading: self?.showLoadingState()
+                case .loaded: self?.showLoadedState()
+                case .error: self?.showErrorState()
+                case .showsFiltered(let shows): self?.updateData(on: shows)
+                }
+            }.store(in: &cancellables)
     }
     
     private func showLoadingState() { handleSpinner(isLoading: true) }
