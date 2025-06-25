@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 enum FeedViewControllerStates {
     case loading
@@ -14,23 +15,28 @@ enum FeedViewControllerStates {
     case showsFiltered([Show])
 }
 
-protocol FeedViewModelProtocol {
+protocol FeedViewModelProtocol: StatefulViewModel where State == FeedViewControllerStates {
     func numberOfItemsInSection() -> Int
     func cellForItem(at indexPath: IndexPath) -> Show
     func searchBar(textDidChange searchText: String)
     func fetchShows()
-    func observeState(_ observer: @escaping(FeedViewControllerStates) -> Void)
+//    func observeState(_ observer: @escaping(FeedViewControllerStates) -> Void)
 }
 
 class FeedViewModel: FeedViewModelProtocol {
     
-    private var state: Bindable<FeedViewControllerStates> = Bindable(value: .loading)
     private var shows: [Show] = []
     private var showsFiltered: [Show] = []
     private var page: Int = 0
     private var isLoading = false
     private var hasMorePages = true
     private var isSearching = false
+    
+    @Published private var state: FeedViewControllerStates = .loading
+    
+    var statePublisher: AnyPublisher<FeedViewControllerStates, Never> {
+        $state.eraseToAnyPublisher()
+    }
     
     let service: ServiceProtocol
     
@@ -61,7 +67,7 @@ class FeedViewModel: FeedViewModelProtocol {
         guard !isLoading, !isSearching, hasMorePages else { return }
 
         isLoading = true
-        state.value = .loading
+        state = .loading
 
         service.getShows(page: page) { [weak self] result in
             guard let self = self else { return }
@@ -77,22 +83,22 @@ class FeedViewModel: FeedViewModelProtocol {
                 self.page += 1
                 self.shows.append(contentsOf: newShows)
                 self.showsFiltered.append(contentsOf: newShows)
-                self.state.value = .loaded
-                self.state.value = .showsFiltered(self.showsFiltered)
+                self.state = .loaded
+                self.state = .showsFiltered(self.showsFiltered)
                 
                 print("DEBUG: Carregando pagina \(self.page), com \(newShows.count) shows. TOTAL DE SHOWS: \(self.shows.count)")
 
             case .failure:
-                self.state.value = .error
+                self.state = .error
             }
         }
     }
     
     private func updateState(_ newState: FeedViewControllerStates) {
-        state.value = newState
+        state = newState
     }
     
-    func observeState(_ observer: @escaping(FeedViewControllerStates) -> Void) {
-        state.bind(observer: observer)
-    }
+//    func observeState(_ observer: @escaping(FeedViewControllerStates) -> Void) {
+//        state.bind(observer: observer)
+//    }
 }
