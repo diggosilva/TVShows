@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 enum DetailsViewControllerStates {
     case loading
@@ -14,7 +15,7 @@ enum DetailsViewControllerStates {
     case showAlert(title: String, message: String)
 }
 
-protocol DetailsViewModelProtocol {
+protocol DetailsViewModelProtocol: StatefulViewModel where State == DetailsViewControllerStates {
     func getShow() -> Show
     func numberOfItemsInSection() -> Int
     func castForItem(at indexPath: IndexPath) -> Cast
@@ -25,18 +26,22 @@ protocol DetailsViewModelProtocol {
     func fetchSeasons()
     
     func addShowToFavorite(show: Show, completion: @escaping(Result<String, DSError>) -> Void)
-    func observerState(_ observer: @escaping(DetailsViewControllerStates) -> Void)
 }
 
 class DetailsViewModel: DetailsViewModelProtocol {
 
-    private var state: Bindable<DetailsViewControllerStates> = Bindable(value: .loading)
     private let show: Show
     private var casts: [Cast] = []
     private var seasons: [Season] = []
     
     private let service: ServiceProtocol
     private let repository: RepositoryProtocol
+    
+    @Published private var state: DetailsViewControllerStates = .loading
+    
+    var statePublisher: AnyPublisher<DetailsViewControllerStates, Never> {
+        $state.eraseToAnyPublisher()
+    }
         
     init(show: Show, service: ServiceProtocol = Service(), repository: RepositoryProtocol = Repository()) {
         self.show = show
@@ -58,7 +63,7 @@ class DetailsViewModel: DetailsViewModelProtocol {
     }
     
     func fetchCast() {
-        state.value = .loading
+        state = .loading
         
         service.getCast(id: show.id) { [weak self] result in
             guard let self = self else { return }
@@ -66,11 +71,11 @@ class DetailsViewModel: DetailsViewModelProtocol {
             switch result {
             case .success(let casts):
                 self.casts.append(contentsOf: casts)
-                state.value = .loaded
+                state = .loaded
                 
             case .failure(let error):
                 print("DEBUG: Error \(error.rawValue)")
-                state.value = .error
+                state = .error
             }
         }
     }
@@ -85,7 +90,7 @@ class DetailsViewModel: DetailsViewModelProtocol {
     }
     
     func fetchSeasons() {
-        state.value = .loading
+        state = .loading
         
         service.getSeasons(id: show.id) { [weak self] result in
             guard let self = self else { return }
@@ -93,11 +98,11 @@ class DetailsViewModel: DetailsViewModelProtocol {
             switch result {
             case .success(let seasons):
                 self.seasons.append(contentsOf: seasons)
-                state.value = .loaded
+                state = .loaded
                 
             case .failure(let error):
                 print("DEBUG: Error \(error.rawValue)")
-                state.value = .error
+                state = .error
             }
         }
     }
@@ -108,15 +113,11 @@ class DetailsViewModel: DetailsViewModelProtocol {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self.state.value = .showAlert(title: "Sucesso! 🌟", message: "Série adicionada aos favoritos!")
+                    self.state = .showAlert(title: "Sucesso! ✅", message: "Série adicionada aos favoritos!")
                 case .failure(let error):
-                    self.state.value = .showAlert(title: "Ops... algo deu errado! 😓", message: error.rawValue)
+                    self.state = .showAlert(title: "Ops... algo deu errado! ⛔️", message: error.rawValue)
                 }
             }
         }
-    }
-    
-    func observerState(_ observer: @escaping(DetailsViewControllerStates) -> Void) {
-        state.bind(observer: observer)
     }
 }
