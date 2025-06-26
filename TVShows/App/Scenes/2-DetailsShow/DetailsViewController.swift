@@ -6,13 +6,15 @@
 //
 
 import UIKit
+import Combine
 
 class DetailsViewController: UIViewController {
     
     let detailsView = DetailsView()
-    var viewModel: DetailsViewModelProtocol
+    var viewModel: any DetailsViewModelProtocol
+    private var cancellables = Set<AnyCancellable>()
     
-    init(viewModel: DetailsViewModelProtocol) {
+    init(viewModel: any DetailsViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -34,15 +36,17 @@ class DetailsViewController: UIViewController {
     }
     
     private func handleStates() {
-        viewModel.observerState { states in
-            switch states {
-            case .loading: self.showLoadingState()
-            case .loaded: self.showLoadedState()
-            case .error: self.showErrorState()
-            case .showAlert(title: let title, message: let message):
-                self.showAlertState(title: title, message: message)
-            }
-        }
+        viewModel.statePublisher
+            .receive(on: RunLoop.main)
+            .sink { state in
+                switch state {
+                case .loading: self.showLoadingState()
+                case .loaded: self.showLoadedState()
+                case .error: self.showErrorState()
+                case .showAlert(title: let title, message: let message):
+                    self.showAlertState(title: title, message: message)
+                }
+            }.store(in: &cancellables)
     }
     
     private func showLoadingState() {
