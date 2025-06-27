@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 enum EpisodesViewControllerStates {
     case loading
@@ -13,20 +14,23 @@ enum EpisodesViewControllerStates {
     case error
 }
 
-protocol EpisodesViewModelProtocol {
+protocol EpisodesViewModelProtocol: StatefulViewModel where State == EpisodesViewControllerStates {
     func numberOfRowsInSection() -> Int
     func cellForRow(at indexPath: IndexPath) -> Episode
     func fetchEpisodes()
-    func observerState(_ observer: @escaping(EpisodesViewControllerStates) -> Void)
 }
 
 class EpisodesViewModel: EpisodesViewModelProtocol {
    
-    private var state: Bindable<EpisodesViewControllerStates> = Bindable(value: .loading)
     private var show: Show!
     private var season: Int
     private var episodes: [Episode] = []
     private let service: ServiceProtocol
+    @Published private var state: EpisodesViewControllerStates = .loading
+    
+    var statePublisher: AnyPublisher<EpisodesViewControllerStates, Never> {
+        $state.eraseToAnyPublisher()
+    }
     
     init(show: Show, season: Int, service: ServiceProtocol = Service()) {
         self.service = service
@@ -43,7 +47,7 @@ class EpisodesViewModel: EpisodesViewModelProtocol {
     }
     
     func fetchEpisodes() {
-        state.value = .loading
+        state = .loading
         
         service.getEpisodes(id: show.id) { [weak self] result in
             guard let self = self else { return }
@@ -52,16 +56,12 @@ class EpisodesViewModel: EpisodesViewModelProtocol {
             case .success(let episodes):
                 self.episodes.append(contentsOf: episodes)
                 self.episodes = episodes.filter({ $0.season == self.season })
-                state.value = .loaded
+                state = .loaded
                 
             case .failure(let error):
                 print("Error: \(error.rawValue)")
-                state.value = .error
+                state = .error
             }
         }
-    }
-    
-    func observerState(_ observer: @escaping(EpisodesViewControllerStates) -> Void) {
-        state.bind(observer: observer)
     }
 }

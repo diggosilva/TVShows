@@ -6,11 +6,14 @@
 //
 
 import UIKit
+import Combine
 
 class EpisodesViewController: UIViewController {
     
     let episodesView = EpisodesView()
     let viewModel: EpisodesViewModel
+    
+    private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: EpisodesViewModel) {
         self.viewModel = viewModel
@@ -44,13 +47,15 @@ class EpisodesViewController: UIViewController {
     }
     
     private func handleStates() {
-        viewModel.observerState { states in
-            switch states {
-            case .loading: self.showLoadingState()
-            case .loaded: self.showLoadedState()
-            case .error: self.showErrorState()
-            }
-        }
+        viewModel.statePublisher
+            .receive(on: RunLoop.main)
+            .sink { state in
+                switch state {
+                case .loading: self.showLoadingState()
+                case .loaded: self.showLoadedState()
+                case .error: self.showErrorState()
+                }
+            }.store(in: &cancellables)
     }
     
     private func showLoadingState() {
