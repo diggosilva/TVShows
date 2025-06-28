@@ -49,17 +49,15 @@ class EpisodesViewModel: EpisodesViewModelProtocol {
     func fetchEpisodes() {
         state = .loading
         
-        service.getEpisodes(id: show.id) { [weak self] result in
+        Task { @MainActor [weak self] in
             guard let self = self else { return }
             
-            switch result {
-            case .success(let episodes):
+            do {
+                let episodes = try await service.getEpisodes(id: show.id)
                 self.episodes.append(contentsOf: episodes)
                 self.episodes = episodes.filter({ $0.season == self.season })
                 state = .loaded
-                
-            case .failure(let error):
-                print("Error: \(error.rawValue)")
+            } catch {
                 state = .error
             }
         }

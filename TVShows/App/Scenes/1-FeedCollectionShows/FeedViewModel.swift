@@ -67,29 +67,26 @@ class FeedViewModel: FeedViewModelProtocol {
 
         isLoading = true
         state = .loading
-
-        service.getShows(page: page) { [weak self] result in
-            guard let self = self else { return }
-            self.isLoading = false
-
-            switch result {
-            case .success(let newShows):
+        
+        Task { @MainActor in
+            
+            do {
+                let newShows = try await service.getShows(page: page)
                 if newShows.isEmpty {
-                    self.hasMorePages = false
+                    hasMorePages = false
+                    isLoading = false
                     return
                 }
-
                 self.page += 1
                 self.shows.append(contentsOf: newShows)
                 self.showsFiltered.append(contentsOf: newShows)
                 self.state = .loaded
                 self.state = .showsFiltered(self.showsFiltered)
-                
                 print("DEBUG: Carregando pagina \(self.page), com \(newShows.count) shows. TOTAL DE SHOWS: \(self.shows.count)")
-
-            case .failure:
+            } catch {
                 self.state = .error
             }
+            self.isLoading = false
         }
     }
     
