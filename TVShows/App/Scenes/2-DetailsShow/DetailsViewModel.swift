@@ -65,16 +65,14 @@ class DetailsViewModel: DetailsViewModelProtocol {
     func fetchCast() {
         state = .loading
         
-        service.getCast(id: show.id) { [weak self] result in
+        Task { @MainActor [weak self] in
             guard let self = self else { return }
             
-            switch result {
-            case .success(let casts):
+            do {
+                let casts = try await service.getCast(id: show.id)
                 self.casts.append(contentsOf: casts)
                 state = .loaded
-                
-            case .failure(let error):
-                print("DEBUG: Error \(error.rawValue)")
+            } catch {
                 state = .error
             }
         }
@@ -92,16 +90,14 @@ class DetailsViewModel: DetailsViewModelProtocol {
     func fetchSeasons() {
         state = .loading
         
-        service.getSeasons(id: show.id) { [weak self] result in
+        Task { @MainActor [weak self] in
             guard let self = self else { return }
             
-            switch result {
-            case .success(let seasons):
+            do {
+                let seasons = try await service.getSeasons(id: show.id)
                 self.seasons.append(contentsOf: seasons)
                 state = .loaded
-                
-            case .failure(let error):
-                print("DEBUG: Error \(error.rawValue)")
+            } catch {
                 state = .error
             }
         }
