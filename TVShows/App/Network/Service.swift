@@ -8,104 +8,101 @@
 import Foundation
 
 protocol ServiceProtocol {
-    func getShows(page: Int, completion: @escaping(Result<[Show], DSError>) -> Void)
-    func getCast(id: Int, completion: @escaping(Result<[Cast], DSError>) -> Void)
-    func getSeasons(id: Int, completion: @escaping(Result<[Season], DSError>) -> Void)
-    func getEpisodes(id: Int, completion: @escaping(Result<[Episode], DSError>) -> Void)
+    func getShows(page: Int) async throws -> [Show]
+    func getCast(id: Int) async throws -> [Cast]
+    func getSeasons(id: Int) async throws -> [Season]
+    func getEpisodes(id: Int) async throws -> [Episode]
 }
 
 final class Service: ServiceProtocol {
-    
-    func getShows(page: Int, completion: @escaping(Result<[Show], DSError>) -> Void) {
-        fetchData(endpoint: .pagedShows(page: page), decodingType: [ShowsResponse].self) { result in
-            switch result {
-            case .success(let showsResponse):
-                let shows = showsResponse.map { show in
-                    Show(id: show.id, name: show.name, mediumImage: show.image?.medium, originalImage: show.image?.original, rating: show.rating.average, summary: show.summary)
-                }
-                completion(.success(shows))
-            case .failure(_):
-                completion(.failure(.showsFailed))
-            }
+    func getShows(page: Int) async throws -> [Show] {
+        let showsResponse = try await fetchData(endpoint: .pagedShows(page: page), decodingType: [ShowsResponse].self)
+        var shows: [Show] = []
+        
+        for show in showsResponse {
+            let show = Show(id: show.id,
+                            name: show.name,
+                            mediumImage: show.image?.medium,
+                            originalImage: show.image?.original,
+                            rating: show.rating.average,
+                            summary: show.summary)
+            shows.append(show)
         }
+        return shows
     }
     
-    func getCast(id: Int, completion: @escaping(Result<[Cast], DSError>) -> Void) {
-        fetchData(endpoint: .castForShow(id: id), decodingType: [CastResponse].self) { result in
-            switch result {
-            case .success(let castsResponse):
-                let casts = castsResponse.map { cast in
-                    Cast(id: cast.person.id, name: cast.person.name, image: (medium: cast.person.image?.medium, original: cast.person.image?.original), country: (name: cast.person.country?.name, code: cast.person.country?.code), birthday: cast.person.birthday, gender: cast.person.gender)
-                }
-                completion(.success(casts))
-            case .failure(_):
-                completion(.failure(.castFailed))
-            }
+    func getCast(id: Int) async throws -> [Cast] {
+        let castResponse = try await fetchData(endpoint: .castForShow(id: id), decodingType: [CastResponse].self)
+        var castList: [Cast] = []
+        
+        for cast in castResponse {
+            let person = cast.person
+            let cast = Cast(id: person.id,
+                            name: person.name,
+                            image: (medium: person.image?.medium, original: person.image?.original),
+                            country: (name: person.name, code: person.country?.code),
+                            birthday: person.birthday,
+                            gender: person.gender)
+            castList.append(cast)
         }
-    }
-
-    func getSeasons(id: Int, completion: @escaping(Result<[Season], DSError>) -> Void) {
-        fetchData(endpoint: .seasonsForShow(id: id), decodingType: [SeasonResponse].self) { result in
-            switch result {
-            case .success(let seasonsResponse):
-                let seasons = seasonsResponse.map { season in
-                    Season(id: season.id, number: season.number, image: (medium: season.image?.medium, original: season.image?.original), episodes: season.episodeOrder)
-                }
-                completion(.success(seasons))
-            case .failure(_):
-                completion(.failure(.seasonFailed))
-            }
-        }
+        return castList
     }
     
-    func getEpisodes(id: Int, completion: @escaping(Result<[Episode], DSError>) -> Void) {
-        fetchData(endpoint: .episodesForShow(id: id), decodingType: [EpisodeResponse].self) { result in
-            switch result {
-            case .success(let episodesResponse):
-                let episodes = episodesResponse.map { episode in
-                    Episode(id: episode.id, name: episode.name, season: episode.season, number: episode.number, airdate: episode.airdate, airtime: episode.airtime, rating: episode.rating?.average, image: (medium: episode.image?.medium, original: episode.image?.original), summary: episode.summary)
-                }
-                completion(.success(episodes))
-            case .failure(_):
-                completion(.failure(.episodeFailed))
-            }
+    func getSeasons(id: Int) async throws -> [Season] {
+        let seasonResponse = try await fetchData(endpoint: .seasonsForShow(id: id), decodingType: [SeasonResponse].self)
+        var seasons: [Season] = []
+        
+        for season in seasonResponse {
+            let season = Season(id: season.id,
+                                number: season.number,
+                                image: (medium: season.image?.medium, original: season.image?.original),
+                                episodes: season.episodeOrder)
+            seasons.append(season)
         }
+        return seasons
     }
     
-    private func fetchData<T: Decodable>(endpoint: TVMazeEndpoint, decodingType: T.Type, completion: @escaping(Result<T, DSError>) -> Void) {
+    func getEpisodes(id: Int) async throws -> [Episode] {
+        let episodesResponse = try await fetchData(endpoint: .episodesForShow(id: id), decodingType: [EpisodeResponse].self)
+        var episodes: [Episode] = []
+            
+        for episode in episodesResponse {
+            let episode = Episode(id: episode.id,
+                                  name: episode.name,
+                                  season: episode.season,
+                                  number: episode.number,
+                                  airdate: episode.airdate,
+                                  airtime: episode.airtime,
+                                  rating: episode.rating?.average,
+                                  image: (medium: episode.image?.original, original: episode.image?.original),
+                                  summary: episode.summary)
+            episodes.append(episode)
+        }
+        return episodes
+    }
+    
+    private func fetchData<T: Decodable>(endpoint: TVMazeEndpoint, decodingType: T.Type) async throws -> T {
         guard let url = createURL(for: endpoint) else {
-            completion(.failure(.invalidData))
-            return
+            throw DSError.invalidData
         }
         
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    print("DEBUG: Erro ao fazer a requisição: \(error)")
-                    completion(.failure(.networkError))
-                    return
-                }
-                
-                guard response is HTTPURLResponse else {
-                    completion(.failure(.networkError))
-                    return
-                }
-                                
-                guard let data = data else {
-                    completion(.failure(.invalidData))
-                    return
-                }
-                
-                do {
-                    let decodedResponse = try JSONDecoder().decode(decodingType, from: data)
-                    completion(.success(decodedResponse))
-                } catch {
-                    print("DEBUG: Erro ao decodificar os dados: \(error)")
-                    completion(.failure(.failedDecoding))
-                }
-            }
+        let (data, response): (Data, URLResponse)
+        
+        do {
+            (data, response) = try await URLSession.shared.data(from: url)
+        } catch {
+            throw DSError.networkError
         }
-        task.resume()
+        
+        guard (response as? HTTPURLResponse) != nil else {
+            throw DSError.networkError
+        }
+        
+        do {
+            return try JSONDecoder().decode(T.self, from: data)
+        } catch {
+            throw DSError.failedDecoding
+        }
     }
     
     private func createURL(for endpoint: TVMazeEndpoint) -> URL? {
