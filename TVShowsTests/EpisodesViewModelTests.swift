@@ -6,40 +6,58 @@
 //
 
 import XCTest
+import Combine
 @testable import TVShows
 
 class MockEpisodes: ServiceProtocol {
     var isSuccess: Bool = true
     
-    func getShows(page: Int, completion: @escaping (Result<[Show], DSError>) -> Void) {}
+    func getShows(page: Int) async throws -> [Show] { return [] }
+    func getCast(id: Int) async throws -> [Cast] { return [] }
+    func getSeasons(id: Int) async throws -> [Season] { return [] }
     
-    func getCast(id: Int, completion: @escaping (Result<[Cast], DSError>) -> Void) {}
-    
-    func getSeasons(id: Int, completion: @escaping (Result<[Season], DSError>) -> Void) {}
-    
-    func getEpisodes(id: Int, completion: @escaping (Result<[Episode], DSError>) -> Void) {
+    func getEpisodes(id: Int) async throws -> [Episode] {
         if isSuccess {
-            completion(.success([
+            return [
                 Episode(id: 1, name: "Pilot", season: 0, number: 0, airdate: "", airtime: "", rating: nil, image: (medium: nil, original: nil), summary: ""),
                 Episode(id: 2, name: "CoPilot", season: 0, number: 0, airdate: "", airtime: "", rating: nil, image: (medium: nil, original: nil), summary: "")
-            ]))
+            ]
         } else {
-            completion(.failure(.episodeFailed))
+            throw DSError.episodeFailed
         }
     }
 }
 
 final class EpisodesViewModelTests: XCTestCase {
+    
     let show = Show(id: 0, name: "Aviation", mediumImage: "", originalImage: "", rating: nil, summary: "")
+    private var cancellables = Set<AnyCancellable>()
+    
+    override func setUp() {
+        super.setUp()
+    }
+    
+    override func tearDown() {
+        cancellables.removeAll()
+        super.tearDown()
+    }
     
     //MARK: TESTS SUCCESS
-    func testWhenGetEpisodesSuccess() {
+    func testWhenGetEpisodesSuccess() async throws {
         let service = MockEpisodes()
         let sut = EpisodesViewModel(show: show, season: 0, service: service)
+        let expectation = XCTestExpectation(description: "State deveria ser .loaded")
         
-        XCTAssertEqual(sut.numberOfRowsInSection(), 0)
+        sut.statePublisher
+            .sink { state in
+                if state == .loaded {
+                    expectation.fulfill()
+                }
+            }.store(in: &cancellables)
         
         sut.fetchEpisodes()
+        
+        await fulfillment(of: [expectation], timeout: 2.0)
         
         let firstEpisode = sut.cellForRow(at: IndexPath(row: 0, section: 0)).name
         let secondEpisode = sut.cellForRow(at: IndexPath(row: 1, section: 0)).name
@@ -57,6 +75,27 @@ final class EpisodesViewModelTests: XCTestCase {
         let sut = EpisodesViewModel(show: show, season: 0, service: service)
         
         sut.fetchEpisodes()
+        
+        XCTAssertEqual(sut.numberOfRowsInSection(), 0)
+    }
+    
+    func testWhenGetEpisodesStateError() async throws {
+        let service = MockEpisodes()
+        service.isSuccess = false
+        
+        let sut = EpisodesViewModel(show: show, season: 0, service: service)
+        let expectation = XCTestExpectation(description: "State deveria ser .error")
+        
+        sut.statePublisher
+            .sink { state in
+                if state == .error {
+                    expectation.fulfill()
+                }
+            }.store(in: &cancellables)
+        
+        sut.fetchEpisodes()
+        
+        await fulfillment(of: [expectation], timeout: 2.0)
         
         XCTAssertEqual(sut.numberOfRowsInSection(), 0)
     }
