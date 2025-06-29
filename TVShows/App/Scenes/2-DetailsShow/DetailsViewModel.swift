@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-enum DetailsViewControllerStates {
+enum DetailsViewControllerStates: Equatable {
     case loading
     case loaded
     case error
