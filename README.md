@@ -28,11 +28,15 @@ A Swift iOS TV Shows app. An application built solely for study purposes. The ap
 
 - View Code (UIKit)
 - Modern CollectionView Diffable
-- Modern TableView
+- Modern TableView Diffable
 - UserDefaults
 - Custom elements
 - Pagination
 - Dark Mode
+- MVVM with Combine
+- Await/Async Request
+- UserDefults
+- Unit Tests
 
 ## Requirements
 
