@@ -28,7 +28,7 @@ A Swift iOS TV Shows app. An application built solely for study purposes. The ap
 
 - View Code (UIKit)
 - Modern CollectionView Diffable
-- Modern TableView Diffable
+- Modern TableView
 - UserDefaults
 - Custom elements
 - Pagination
