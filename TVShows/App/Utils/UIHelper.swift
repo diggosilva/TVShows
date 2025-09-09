@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum DSViewBuilder {
+final class DSViewBuilder {
     static func buildImageView(image: UIImage? = SFSymbols.empty?.withTintColor(.systemGray3, renderingMode: .alwaysOriginal), cornerRadius: CGFloat? = nil, borderWidth: CGFloat? = nil, contentMode: UIView.ContentMode = .scaleAspectFill) -> UIImageView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
