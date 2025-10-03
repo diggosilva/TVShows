@@ -9,31 +9,6 @@ import XCTest
 import Combine
 @testable import TVShows
 
-class MockFeed: ServiceProtocol {
-    
-    var isSuccess: Bool = true
-    var shouldReturnEmpty = false
-    
-    func getShows(page: Int) async throws -> [Show] {
-        if isSuccess {
-            if shouldReturnEmpty {
-                return []
-            } else {
-                return [
-                    Show(id: 1, name: "Teste", mediumImage: "", originalImage: "", rating: 0.0, summary: ""),
-                    Show(id: 2, name: "Show", mediumImage: "", originalImage: "", rating: 0.0, summary: "")
-                ]
-            }
-        } else {
-            throw DSError.showsFailed
-        }
-    }
-    
-    func getCast(id: Int) async throws -> [Cast] { return [] }
-    func getSeasons(id: Int) async throws -> [Season] { return [] }
-    func getEpisodes(id: Int) async throws -> [Episode] { return [] }
-}
-
 final class TVShowsTests: XCTestCase {
     
     var cancellables = Set<AnyCancellable>()
@@ -49,7 +24,7 @@ final class TVShowsTests: XCTestCase {
     
     //MARK: TESTS SUCCESS
     func testWhenGettingShowsSuccessfully() async throws {
-        let mockService = MockFeed()
+        let mockService = MockService()
         let sut = FeedViewModel(service: mockService)
         let expectation = XCTestExpectation(description: "State deveria ser .loaded")
         
@@ -63,7 +38,7 @@ final class TVShowsTests: XCTestCase {
                 
         sut.fetchShows()
         
-        await fulfillment(of: [expectation], timeout: 2.0)
+        await fulfillment(of: [expectation], timeout: 1.0)
         
         XCTAssertEqual(sut.numberOfItemsInSection(), 2)
         XCTAssertEqual(sut.cellForItem(at: IndexPath(row: 1, section: 0)).name, "Show")
@@ -77,7 +52,7 @@ final class TVShowsTests: XCTestCase {
     
     //MARK: TESTS FAILURE
     func testWhenGettingShowsFailed() {
-        let mockService = MockFeed()
+        let mockService = MockService()
         mockService.isSuccess = false
         let sut = FeedViewModel(service: mockService)
         
@@ -86,7 +61,7 @@ final class TVShowsTests: XCTestCase {
     }
     
     func testFetchShowsWhenServiceReturnsEmptyShouldSetHasMorePagesFalse() async throws {
-        let mockService = MockFeed()
+        let mockService = MockService()
         mockService.shouldReturnEmpty = true
         
         let sut = FeedViewModel(service: mockService)
@@ -102,7 +77,7 @@ final class TVShowsTests: XCTestCase {
         
         sut.fetchShows()
         
-        await fulfillment(of: [expectation], timeout: 2.0)
+        await fulfillment(of: [expectation], timeout: 1.0)
         
         XCTAssertEqual(sut.numberOfItemsInSection(), 0)
     }

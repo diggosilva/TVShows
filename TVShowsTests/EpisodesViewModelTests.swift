@@ -9,25 +9,6 @@ import XCTest
 import Combine
 @testable import TVShows
 
-class MockEpisodes: ServiceProtocol {
-    var isSuccess: Bool = true
-    
-    func getShows(page: Int) async throws -> [Show] { return [] }
-    func getCast(id: Int) async throws -> [Cast] { return [] }
-    func getSeasons(id: Int) async throws -> [Season] { return [] }
-    
-    func getEpisodes(id: Int) async throws -> [Episode] {
-        if isSuccess {
-            return [
-                Episode(id: 1, name: "Pilot", season: 0, number: 0, airdate: "", airtime: "", rating: nil, image: (medium: nil, original: nil), summary: ""),
-                Episode(id: 2, name: "CoPilot", season: 0, number: 0, airdate: "", airtime: "", rating: nil, image: (medium: nil, original: nil), summary: "")
-            ]
-        } else {
-            throw DSError.episodeFailed
-        }
-    }
-}
-
 final class EpisodesViewModelTests: XCTestCase {
     
     let show = Show(id: 0, name: "Aviation", mediumImage: "", originalImage: "", rating: nil, summary: "")
@@ -44,7 +25,7 @@ final class EpisodesViewModelTests: XCTestCase {
     
     //MARK: TESTS SUCCESS
     func testWhenGetEpisodesSuccess() async throws {
-        let service = MockEpisodes()
+        let service = MockService()
         let sut = EpisodesViewModel(show: show, season: 0, service: service)
         let expectation = XCTestExpectation(description: "State deveria ser .loaded")
         
@@ -57,7 +38,7 @@ final class EpisodesViewModelTests: XCTestCase {
         
         sut.fetchEpisodes()
         
-        await fulfillment(of: [expectation], timeout: 2.0)
+        await fulfillment(of: [expectation], timeout: 1.0)
         
         let firstEpisode = sut.cellForRow(at: IndexPath(row: 0, section: 0)).name
         let secondEpisode = sut.cellForRow(at: IndexPath(row: 1, section: 0)).name
@@ -69,7 +50,7 @@ final class EpisodesViewModelTests: XCTestCase {
     
     //MARK: TESTS FAILURE
     func testWhenGetEpisodesFailure() {
-        let service = MockEpisodes()
+        let service = MockService()
         service.isSuccess = false
         
         let sut = EpisodesViewModel(show: show, season: 0, service: service)
@@ -80,7 +61,7 @@ final class EpisodesViewModelTests: XCTestCase {
     }
     
     func testWhenGetEpisodesStateError() async throws {
-        let service = MockEpisodes()
+        let service = MockService()
         service.isSuccess = false
         
         let sut = EpisodesViewModel(show: show, season: 0, service: service)
@@ -95,7 +76,7 @@ final class EpisodesViewModelTests: XCTestCase {
         
         sut.fetchEpisodes()
         
-        await fulfillment(of: [expectation], timeout: 2.0)
+        await fulfillment(of: [expectation], timeout: 1.0)
         
         XCTAssertEqual(sut.numberOfRowsInSection(), 0)
     }

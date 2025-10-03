@@ -9,37 +9,6 @@ import XCTest
 import Combine
 @testable import TVShows
 
-class MockDetails: ServiceProtocol {
-    
-    var isSuccess: Bool = true
-    
-    func getCast(id: Int) async throws -> [Cast] {
-        if isSuccess {
-            return [
-                Cast(id: 1, name: "Mario", image: (medium: nil, original: nil), country: (name: nil, code: nil), birthday: nil, gender: nil),
-                Cast(id: 2, name: "Luigi", image: (medium: nil, original: nil), country: (name: nil, code: nil), birthday: nil, gender: nil)
-            ]
-        } else {
-            throw DSError.castFailed
-        }
-    }
-    
-    func getSeasons(id: Int) async throws -> [Season] {
-        if isSuccess {
-            return [
-                Season(id: 1, number: 1, image: (medium: nil, original: nil), episodes: nil),
-                Season(id: 2, number: 2, image: (medium: nil, original: nil), episodes: nil),
-                Season(id: 3, number: 3, image: (medium: nil, original: nil), episodes: nil)
-            ]
-        } else {
-            throw DSError.seasonFailed
-        }
-    }
-    
-    func getShows(page: Int) async throws -> [Show] { return [] }
-    func getEpisodes(id: Int) async throws -> [Episode] { return [] }
-}
-
 class MockRepository: RepositoryProtocol {
     var isSuccess: Bool = true
     
@@ -73,7 +42,7 @@ final class DetailsViewModelTests: XCTestCase {
     
     //MARK: TEST CAST SUCCESS
     func testWhenCastIsSuccess() async throws {
-        let service = MockDetails()
+        let service = MockService()
         let sut = DetailsViewModel(show: show, service: service)
         let expectation = XCTestExpectation(description: "State deveria ser .loaded")
         
@@ -86,7 +55,7 @@ final class DetailsViewModelTests: XCTestCase {
         
         sut.fetchCast()
         
-        await fulfillment(of: [expectation], timeout: 2.0)
+        await fulfillment(of: [expectation], timeout: 1.0)
         
         XCTAssertEqual(sut.numberOfItemsInSection(), 2)
         
@@ -102,7 +71,7 @@ final class DetailsViewModelTests: XCTestCase {
     
     //MARK: TEST CAST FAILURE
     func testWhenCastFails() async throws {
-        let service = MockDetails()
+        let service = MockService()
         service.isSuccess = false
         
         let sut = DetailsViewModel(show: show, service: service)
@@ -117,14 +86,14 @@ final class DetailsViewModelTests: XCTestCase {
         
         sut.fetchCast()
         
-        await fulfillment(of: [expectation], timeout: 2.0)
+        await fulfillment(of: [expectation], timeout: 1.0)
         
         XCTAssertEqual(sut.numberOfItemsInSection(), 0)
     }
     
     //MARK: TEST SEASON SUCCESS
     func testWhenSeasonIsSuccess() async throws {
-        let service = MockDetails()
+        let service = MockService()
         let sut = DetailsViewModel(show: show, service: service)
         let expectation = XCTestExpectation(description: "State deveria ser .loaded")
         
@@ -137,7 +106,7 @@ final class DetailsViewModelTests: XCTestCase {
         
         sut.fetchSeasons()
         
-        await fulfillment(of: [expectation], timeout: 2.0)
+        await fulfillment(of: [expectation], timeout: 1.0)
         
         let firstSeasonNumber = sut.seasonForItem(at: IndexPath(row: 0, section: 0)).number
         let lastSeasonNumber = sut.seasonForItem(at: IndexPath(row: 2, section: 0)).number
@@ -149,7 +118,7 @@ final class DetailsViewModelTests: XCTestCase {
     
     //MARK: TEST SEASON FAILURE
     func testWhenSeasonFails() async throws {
-        let service = MockDetails()
+        let service = MockService()
         service.isSuccess = false
         
         let sut = DetailsViewModel(show: show, service: service)
@@ -164,7 +133,7 @@ final class DetailsViewModelTests: XCTestCase {
         
         sut.fetchSeasons()
         
-        await fulfillment(of: [expectation], timeout: 2.0)
+        await fulfillment(of: [expectation], timeout: 1.0)
         
         XCTAssertEqual(sut.numberOfSeasonsInSection(), 0)
     }
@@ -172,7 +141,7 @@ final class DetailsViewModelTests: XCTestCase {
     //MARK: TEST ADD SHOW TO FAVORITES SUCCESS
     func testWhenAddShowToFavoritesSuccess() {
         let repository = MockRepository()
-        let sut = DetailsViewModel(show: show, service: MockDetails(), repository: repository)
+        let sut = DetailsViewModel(show: show, service: MockService(), repository: repository)
         
         var alertTitle: String?
         var alertMessage: String?
@@ -192,7 +161,7 @@ final class DetailsViewModelTests: XCTestCase {
         let repository = MockRepository()
         repository.isSuccess = false
         
-        let sut = DetailsViewModel(show: show, service: MockDetails(), repository: repository)
+        let sut = DetailsViewModel(show: show, service: MockService(), repository: repository)
         
         var alertTitle: String?
         var alertMessage: String?
