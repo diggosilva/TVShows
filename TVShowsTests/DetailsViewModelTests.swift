@@ -29,7 +29,6 @@ class MockRepository: RepositoryProtocol {
 final class DetailsViewModelTests: XCTestCase {
     
     var cancellables = Set<AnyCancellable>()
-    let show = Show(id: 0, name: "Super Mario", mediumImage: "", originalImage: "", rating: nil, summary: "")
     
     override func setUp() {
         super.setUp()
@@ -42,6 +41,7 @@ final class DetailsViewModelTests: XCTestCase {
     
     //MARK: TEST CAST SUCCESS
     func testWhenCastIsSuccess() async throws {
+        let show = Show(id: 0, name: "Super Mario", mediumImage: "", originalImage: "", rating: nil, summary: "")
         let service = MockService()
         let sut = DetailsViewModel(show: show, service: service)
         let expectation = XCTestExpectation(description: "State deveria ser .loaded")
@@ -71,6 +71,7 @@ final class DetailsViewModelTests: XCTestCase {
     
     //MARK: TEST CAST FAILURE
     func testWhenCastFails() async throws {
+        let show = Show(id: 0, name: "Super Mario", mediumImage: "", originalImage: "", rating: nil, summary: "")
         let service = MockService()
         service.isSuccess = false
         
@@ -93,6 +94,7 @@ final class DetailsViewModelTests: XCTestCase {
     
     //MARK: TEST SEASON SUCCESS
     func testWhenSeasonIsSuccess() async throws {
+        let show = Show(id: 0, name: "Super Mario", mediumImage: "", originalImage: "", rating: nil, summary: "")
         let service = MockService()
         let sut = DetailsViewModel(show: show, service: service)
         let expectation = XCTestExpectation(description: "State deveria ser .loaded")
@@ -118,6 +120,7 @@ final class DetailsViewModelTests: XCTestCase {
     
     //MARK: TEST SEASON FAILURE
     func testWhenSeasonFails() async throws {
+        let show = Show(id: 0, name: "Super Mario", mediumImage: "", originalImage: "", rating: nil, summary: "")
         let service = MockService()
         service.isSuccess = false
         
@@ -140,6 +143,7 @@ final class DetailsViewModelTests: XCTestCase {
     
     //MARK: TEST ADD SHOW TO FAVORITES SUCCESS
     func testWhenAddShowToFavoritesSuccess() {
+        let show = Show(id: 0, name: "Super Mario", mediumImage: "", originalImage: "", rating: nil, summary: "")
         let repository = MockRepository()
         let sut = DetailsViewModel(show: show, service: MockService(), repository: repository)
         
@@ -158,6 +162,7 @@ final class DetailsViewModelTests: XCTestCase {
     
     //MARK: TEST ADD SHOW TO FAVORITES FAILURE
     func testWhenAddShowToFavoritesFailure() {
+        let show = Show(id: 0, name: "Super Mario", mediumImage: "", originalImage: "", rating: nil, summary: "")
         let repository = MockRepository()
         repository.isSuccess = false
         
