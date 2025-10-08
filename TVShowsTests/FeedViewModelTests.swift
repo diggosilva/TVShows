@@ -38,7 +38,7 @@ final class TVShowsTests: XCTestCase {
                 
         sut.fetchShows()
         
-        await fulfillment(of: [expectation], timeout: 1.0)
+        await fulfillment(of: [expectation], timeout: 0.01)
         
         XCTAssertEqual(sut.numberOfItemsInSection(), 2)
         XCTAssertEqual(sut.cellForItem(at: IndexPath(row: 1, section: 0)).name, "Show")
@@ -77,7 +77,7 @@ final class TVShowsTests: XCTestCase {
         
         sut.fetchShows()
         
-        await fulfillment(of: [expectation], timeout: 1.0)
+        await fulfillment(of: [expectation], timeout: 0.01)
         
         XCTAssertEqual(sut.numberOfItemsInSection(), 0)
     }
