@@ -11,7 +11,6 @@ import Combine
 
 final class EpisodesViewModelTests: XCTestCase {
     
-    let show = Show(id: 0, name: "Aviation", mediumImage: "", originalImage: "", rating: nil, summary: "")
     private var cancellables = Set<AnyCancellable>()
     
     override func setUp() {
@@ -25,6 +24,7 @@ final class EpisodesViewModelTests: XCTestCase {
     
     //MARK: TESTS SUCCESS
     func testWhenGetEpisodesSuccess() async throws {
+        let show = Show(id: 0, name: "Aviation", mediumImage: "", originalImage: "", rating: nil, summary: "")
         let service = MockService()
         let sut = EpisodesViewModel(show: show, season: 0, service: service)
         let expectation = XCTestExpectation(description: "State deveria ser .loaded")
@@ -50,6 +50,7 @@ final class EpisodesViewModelTests: XCTestCase {
     
     //MARK: TESTS FAILURE
     func testWhenGetEpisodesFailure() {
+        let show = Show(id: 0, name: "Aviation", mediumImage: "", originalImage: "", rating: nil, summary: "")
         let service = MockService()
         service.isSuccess = false
         
@@ -61,6 +62,7 @@ final class EpisodesViewModelTests: XCTestCase {
     }
     
     func testWhenGetEpisodesStateError() async throws {
+        let show = Show(id: 0, name: "Aviation", mediumImage: "", originalImage: "", rating: nil, summary: "")
         let service = MockService()
         service.isSuccess = false
         
